@@ -20,8 +20,8 @@ public class OrganizerFacade {
         dbc.createDatabase();
     }
 
-    public static void downloadML() {
-        MLDownloader mld = new MLDownloader();
+    public static void downloadML(int moviesAmount) {
+        MLDownloader mld = new MLDownloader(moviesAmount);
         mld.downloadML();
     }
 }
