@@ -22,8 +22,10 @@ public class DBCreator {
     private boolean remove; // if database with given name arleady exists, removes it if true
     private StringBuilder dump;
     private FileHandler fHandler;
+    private DBHelper dbHelper;
 
-    public DBCreator(String fileName, boolean remove) {
+    public DBCreator(String fileName, boolean remove, String type) {
+        dbHelper = DBHelper.getDBHelper(type);
         fHandler = new FileHandler(this, fileName);
         this.remove = remove;
         dump = new StringBuilder("");
@@ -43,13 +45,13 @@ public class DBCreator {
 
     private void createFromFile() {
         System.out.println("Getting connection");
-        Connection conn = DBHelper.getConnection(dbFullName);
+        Connection conn = dbHelper.getConnection(dbFullName);
         if (conn == null) {
             System.out.println("could not get connection!");
         } else {
             System.out.println("Connected");
             createTables(conn);
-            DBHelper.closeConnection(conn);
+            dbHelper.closeConnection(conn);
         }
     }
 
@@ -62,7 +64,7 @@ public class DBCreator {
 
     private void executeStatement(Connection conn, String statement) {
         System.out.println("Executing statement: " + statement);
-        if (DBHelper.executeStatement(conn, statement)) {
+        if (dbHelper.executeStatement(conn, statement)) {
             dump.append(statement).append(OrganizerUtils.newLine);
             System.out.println("Statement executed properly");
         } else {

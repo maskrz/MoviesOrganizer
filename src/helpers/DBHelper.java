@@ -7,7 +7,6 @@
 package helpers;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -17,22 +16,14 @@ import java.util.logging.Logger;
  *
  * @author Skrzypek
  */
-public class DBHelper {
-    private final static String sDriverName = "org.sqlite.JDBC";
-    private final static String sJdbc = "jdbc:sqlite";
+public abstract class DBHelper {
+    
+    protected String sDriverName;
+    protected String sJdbc;
 
+    public abstract Connection getConnection(String dataBase);
 
-    public static Connection getConnection(String dataBase) {
-        try {
-            Class.forName(sDriverName);
-            String sDbUrl = sJdbc + ":" + dataBase;
-            return DriverManager.getConnection(sDbUrl);
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    public static void closeConnection(Connection conn) {
+    public void closeConnection(Connection conn) {
         try {
             conn.close();
         } catch (SQLException ex) {
@@ -40,7 +31,7 @@ public class DBHelper {
         }
     }
 
-    public static boolean executeStatement(Connection conn, String statement) {
+    public boolean executeStatement(Connection conn, String statement) {
         try (Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(statement);
             stmt.close();
@@ -48,6 +39,17 @@ public class DBHelper {
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;
+        }
+    }
+
+    public static DBHelper getDBHelper(String type) {
+        switch (type) {
+            case "sqlite" :
+                return new SQLiteDBHelper();
+            case "postgreSql" :
+                return new PostgreSqlDBHelper();
+            default :
+                return null;
         }
     }
 }

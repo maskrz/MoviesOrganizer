@@ -138,14 +138,14 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         FilmwebApi fa = new FilmwebApi();
-        ArrayList<Film> fl = fa.getFilmList("Shrek");
+        ArrayList<Film> fl = fa.getFilmList("Borat: Podpatrzone w Ameryce, aby Kazachstan rósł w siłę, a ludzie żyli dostatniej");
         for (Film f : fl) {
             System.out.println(f.getTitle());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void DownloadMLButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DownloadMLButtonActionPerformed
-        // TODO add your handling code here:
+        OrganizerFacade.downloadML();
     }//GEN-LAST:event_DownloadMLButtonActionPerformed
 
     /**

@@ -7,6 +7,7 @@
 package moviesorganizer;
 
 import processors.databaseCreator.DBCreator;
+import processors.mlDownloader.MLDownloader;
 
 /**
  *
@@ -15,11 +16,12 @@ import processors.databaseCreator.DBCreator;
 public class OrganizerFacade {
 
     public static void createDatabase(String dbName, boolean remove) {
-        DBCreator dbc = new DBCreator(dbName, remove);
+        DBCreator dbc = new DBCreator(dbName, remove, "sqlite");
         dbc.createDatabase();
     }
 
     public static void downloadML() {
-
+        MLDownloader mld = new MLDownloader();
+        mld.downloadML();
     }
 }
