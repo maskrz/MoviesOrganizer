@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 6, 2014 3:39:48 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="entity.Movies" table="movies" schema="public">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="increment" />
+        </id>
+        <property name="filmwebId" type="int">
+            <column name="filmweb_id" not-null="true" />
+        </property>
+        <property name="title" type="string">
+            <column name="title" not-null="true" />
+        </property>
+        <property name="originalTitle" type="string">
+            <column name="original_title" not-null="true" />
+        </property>
+        <property name="premiere" type="date">
+            <column name="premiere" length="13" not-null="true" />
+        </property>
+        <property name="duration" type="int">
+            <column name="duration" not-null="true" />
+        </property>
+        <property name="evaluation" type="java.lang.Double">
+            <column name="evaluation" precision="17" scale="17" />
+        </property>
+        <property name="production" type="string">
+            <column name="production" not-null="true" />
+        </property>
+        <property name="isAdaptation" type="java.lang.Boolean">
+            <column name="is_adaptation" />
+        </property>
+        <property name="bookTitle" type="string">
+            <column name="book_title" />
+        </property>
+    </class>
+</hibernate-mapping>

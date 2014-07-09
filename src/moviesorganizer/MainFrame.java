@@ -6,9 +6,12 @@
 
 package moviesorganizer;
 
+import entity.Movie;
+import helpers.HibernateUtil;
 import info.talacha.filmweb.api.FilmwebApi;
 import info.talacha.filmweb.models.Film;
 import java.util.ArrayList;
+import org.hibernate.Session;
 
 /**
  *
@@ -40,6 +43,7 @@ public class MainFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         DownloadMLButton = new javax.swing.JButton();
         moviesAmountTextField = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,6 +81,13 @@ public class MainFrame extends javax.swing.JFrame {
 
         moviesAmountTextField.setText("1000");
 
+        jButton2.setText("jButton2");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -100,7 +111,10 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(dbNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addComponent(removeDbCheckBox)))
+                        .addComponent(removeDbCheckBox))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(jButton2)))
                 .addContainerGap(240, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -119,7 +133,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(DownloadMLButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(moviesAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(151, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addComponent(jButton2)
+                .addContainerGap(97, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -155,6 +171,29 @@ public class MainFrame extends javax.swing.JFrame {
     private void DownloadMLButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DownloadMLButtonActionPerformed
         OrganizerFacade.downloadML(Integer.valueOf(moviesAmountTextField.getText()));
     }//GEN-LAST:event_DownloadMLButtonActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        /* Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+
+        Movies movie = new Movies(null, 2, "test", "testO", new Date(90, 5, 4), 120, "PL");
+        session.save(movie);
+
+        session.getTransaction().commit(); */
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+	session.beginTransaction();
+//        Movie movie1 = new Movie(null, 11, "Shrek", "Shrek", new Date(90, 5, 5), 112, "PL");
+//        Genre genre1 = new Genre(null, "Comedy");
+//        Genre genre2 = new Genre(null, "Family");
+//        movie1.getGenres().add(genre1);
+//        movie1.getGenres().add(genre2);
+//        session.save(movie1);
+//        session.getTransaction().commit();
+        Movie movie = (Movie)session.get(Movie.class, 2);
+        System.out.println(movie.getGenres().size());
+        session.close();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -197,6 +236,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton DownloadMLButton;
     private javax.swing.JTextField dbNameTextField;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField moviesAmountTextField;
     private javax.swing.JCheckBox removeDbCheckBox;
