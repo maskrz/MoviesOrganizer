@@ -6,6 +6,7 @@
 
 package moviesorganizer;
 
+import entity.Genre;
 import entity.Movie;
 import helpers.HibernateUtil;
 import info.talacha.filmweb.api.FilmwebApi;
@@ -44,6 +45,7 @@ public class MainFrame extends javax.swing.JFrame {
         DownloadMLButton = new javax.swing.JButton();
         moviesAmountTextField = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
+        titleTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,7 +67,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         removeDbCheckBox.setText("Remove if exists");
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Get movie");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -81,41 +83,45 @@ public class MainFrame extends javax.swing.JFrame {
 
         moviesAmountTextField.setText("1000");
 
-        jButton2.setText("jButton2");
+        jButton2.setText("Movie from db");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
+        titleTextField.setText("Borat: Podpatrzone w Ameryce, aby Kazachstan rósł w siłę, a ludzie żyli dostatniej");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(jButton1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(DownloadMLButton, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(moviesAmountTextField))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(CreateDatabaseButton, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                                     .addComponent(DownloadDataButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addComponent(dbNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addComponent(removeDbCheckBox))
+                                .addComponent(dbNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(removeDbCheckBox))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(DownloadMLButton, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(moviesAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(jButton2)))
-                .addContainerGap(240, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(titleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 126, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,15 +133,17 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(CreateDatabaseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(dbNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(removeDbCheckBox))
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(DownloadMLButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(moviesAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addComponent(jButton2)
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(titleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(104, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -162,9 +170,13 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         FilmwebApi fa = new FilmwebApi();
-        ArrayList<Film> fl = fa.getFilmList("Borat: Podpatrzone w Ameryce, aby Kazachstan rósł w siłę, a ludzie żyli dostatniej");
+        ArrayList<Film> fl = fa.getFilmList(titleTextField.getText());
         for (Film f : fl) {
             System.out.println(f.getTitle());
+            System.out.println(f.getCountries());
+            System.out.println(f.getDescription());
+            System.out.println(f.getFilmUrl());
+            System.out.println(f.getActors().size());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -173,25 +185,25 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_DownloadMLButtonActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        /* Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
-
-        Movies movie = new Movies(null, 2, "test", "testO", new Date(90, 5, 4), 120, "PL");
-        session.save(movie);
-
-        session.getTransaction().commit(); */
         Session session = HibernateUtil.getSessionFactory().openSession();
 
 	session.beginTransaction();
 //        Movie movie1 = new Movie(null, 11, "Shrek", "Shrek", new Date(90, 5, 5), 112, "PL");
 //        Genre genre1 = new Genre(null, "Comedy");
 //        Genre genre2 = new Genre(null, "Family");
+        Movie movie1 = (Movie) session.get(Movie.class, 8);
+        Genre genre1 = (Genre) session.get(Genre.class, 11);
+        Genre genre2 = (Genre) session.get(Genre.class, 12);
 //        movie1.getGenres().add(genre1);
 //        movie1.getGenres().add(genre2);
+//        System.out.println(genre1.hashCode());
+//        System.out.println(genre2.hashCode());
+//        session.save(genre1);
+//        session.save(genre2);
 //        session.save(movie1);
-//        session.getTransaction().commit();
-        Movie movie = (Movie)session.get(Movie.class, 2);
-        System.out.println(movie.getGenres().size());
+        session.getTransaction().commit();
+//        Movie movie = (Movie)session.get(Movie.class, 2);
+        System.out.println(movie1.getGenres().size());
         session.close();
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -240,5 +252,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField moviesAmountTextField;
     private javax.swing.JCheckBox removeDbCheckBox;
+    private javax.swing.JTextField titleTextField;
     // End of variables declaration//GEN-END:variables
 }

@@ -39,19 +39,10 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="DownloadMLButton" min="-2" pref="139" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="moviesAmountTextField" max="32767" attributes="0"/>
-                              </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="CreateDatabaseButton" pref="139" max="32767" attributes="0"/>
@@ -59,17 +50,29 @@
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="dbNameTextField" min="-2" pref="106" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="removeDbCheckBox" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="DownloadMLButton" min="-2" pref="139" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="moviesAmountTextField" min="-2" pref="106" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="removeDbCheckBox" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                          <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jButton1" min="-2" pref="139" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="titleTextField" min="-2" pref="343" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="jButton2" alignment="0" min="-2" pref="139" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="126" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="240" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -84,16 +87,19 @@
                       <Component id="dbNameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="removeDbCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="DownloadMLButton" alignment="3" min="-2" pref="43" max="-2" attributes="0"/>
                       <Component id="moviesAmountTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-                  <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="97" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jButton1" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
+                      <Component id="titleTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jButton2" min="-2" pref="46" max="-2" attributes="0"/>
+                  <EmptySpace pref="104" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -127,7 +133,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jButton1"/>
+            <Property name="text" type="java.lang.String" value="Get movie"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
@@ -148,11 +154,16 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jButton2"/>
+            <Property name="text" type="java.lang.String" value="Movie from db"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JTextField" name="titleTextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Borat: Podpatrzone w Ameryce, aby Kazachstan r&#xf3;s&#x142; w si&#x142;&#x119;, a ludzie &#x17c;yli dostatniej"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

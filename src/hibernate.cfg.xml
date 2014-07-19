@@ -13,5 +13,7 @@
     
     <mapping class="entity.Movie"/>
     <mapping class="entity.Genre"/>
+    <mapping class="entity.MovieGenre"/>
+    <mapping class="entity.MovieGenreAssociation"/>
   </session-factory>
 </hibernate-configuration>

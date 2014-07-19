@@ -14,14 +14,13 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -78,13 +77,10 @@ public class Movie implements Serializable {
     @Column(name = "is_adaptation")
     private Boolean isAdaptation;
     @Column(name = "book_title", length = 255)
-    private String bookTitle;
-
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "MOVIE_GENRE",
-            joinColumns = {@JoinColumn(name = "MOVIE_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "GENRE_ID")})
-    private Set<Genre> genres = new HashSet<>();
+    private String bookTitle;    
+    
+@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.movie", cascade=CascadeType.ALL)
+    private Set<MovieGenre> genres = new HashSet<>();  
 
     public Movie() {
     }
@@ -182,20 +178,18 @@ public class Movie implements Serializable {
     public void setBookTitle(String bookTitle) {
         this.bookTitle = bookTitle;
     }
-
-    public Set<Genre> getGenres() {
+    
+    public Set<MovieGenre> getGenres() {
         return genres;
     }
 
-    public void setGenres(Set<Genre> genres) {
+    public void setGenres(Set<MovieGenre> genres) {
         this.genres = genres;
     }
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+        return (title+premiere.getYear()).hashCode();
     }
 
     @Override

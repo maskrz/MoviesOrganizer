@@ -10,14 +10,16 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -42,8 +44,10 @@ public class Genre implements Serializable {
     @Basic(optional = false)
     @Column(name = "name", nullable = false, length = 255)
     private String name;
-    @ManyToMany(mappedBy = "genres")
-    private Set<Movie> movies = new HashSet<>();
+    
+    
+@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.genre", cascade=CascadeType.ALL)
+    private Set<MovieGenre> movies = new HashSet<>();
 
     public Genre() {
     }
@@ -73,19 +77,17 @@ public class Genre implements Serializable {
         this.name = name;
     }
 
-    public Set<Movie> getMovies() {
+    public Set<MovieGenre> getMovies() {
         return movies;
     }
 
-    public void setMovies(Set<Movie> movies) {
+    public void setMovies(Set<MovieGenre> movies) {
         this.movies = movies;
     }
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+        return name.hashCode();
     }
 
     @Override
