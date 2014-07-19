@@ -7,9 +7,9 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -79,8 +79,11 @@ public class Movie implements Serializable {
     @Column(name = "book_title", length = 255)
     private String bookTitle;    
     
-@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.movie", cascade=CascadeType.ALL)
-    private Set<MovieGenre> genres = new HashSet<>();  
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.movie", cascade=CascadeType.ALL)
+    private List<MovieGenre> genres = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.movie", cascade=CascadeType.ALL)
+    private List<MovieAward> awards = new ArrayList<>();
 
     public Movie() {
     }
@@ -179,12 +182,20 @@ public class Movie implements Serializable {
         this.bookTitle = bookTitle;
     }
     
-    public Set<MovieGenre> getGenres() {
+    public List<MovieGenre> getGenres() {
         return genres;
     }
 
-    public void setGenres(Set<MovieGenre> genres) {
+    public void setGenres(List<MovieGenre> genres) {
         this.genres = genres;
+    }
+
+    public List<MovieAward> getAwards() {
+        return awards;
+    }
+
+    public void setAwards(List<MovieAward> awards) {
+        this.awards = awards;
     }
 
     @Override

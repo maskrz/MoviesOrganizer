@@ -7,8 +7,8 @@
 package entity;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -47,7 +47,7 @@ public class Genre implements Serializable {
     
     
 @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.genre", cascade=CascadeType.ALL)
-    private Set<MovieGenre> movies = new HashSet<>();
+    private List<MovieGenre> movies = new ArrayList<>();
 
     public Genre() {
     }
@@ -77,11 +77,11 @@ public class Genre implements Serializable {
         this.name = name;
     }
 
-    public Set<MovieGenre> getMovies() {
+    public List<MovieGenre> getMovies() {
         return movies;
     }
 
-    public void setMovies(Set<MovieGenre> movies) {
+    public void setMovies(List<MovieGenre> movies) {
         this.movies = movies;
     }
 
