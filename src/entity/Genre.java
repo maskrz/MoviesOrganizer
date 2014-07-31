@@ -36,17 +36,19 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Genre.findByName", query = "SELECT g FROM Genre g WHERE g.name = :name")})
 public class Genre implements Serializable {
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;
+    
     @Basic(optional = false)
     @Column(name = "name", nullable = false, length = 255)
     private String name;
     
     
-@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.genre", cascade=CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "genre", cascade=CascadeType.ALL)
     private List<MovieGenre> movies = new ArrayList<>();
 
     public Genre() {

@@ -25,6 +25,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import structures.FeaturesVector;
 
 /**
  *
@@ -79,11 +80,14 @@ public class Movie implements Serializable {
     @Column(name = "book_title", length = 255)
     private String bookTitle;    
     
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.movie", cascade=CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie", cascade=CascadeType.ALL)
     private List<MovieGenre> genres = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.movie", cascade=CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie", cascade=CascadeType.ALL)
     private List<MovieAward> awards = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie", cascade=CascadeType.ALL)
+    private List<MoviePerson> people = new ArrayList<>();
 
     public Movie() {
     }
@@ -198,6 +202,14 @@ public class Movie implements Serializable {
         this.awards = awards;
     }
 
+    public List<MoviePerson> getPeople() {
+        return people;
+    }
+
+    public void setPeople(List<MoviePerson> people) {
+        this.people = people;
+    }
+
     @Override
     public int hashCode() {
         return (title+premiere.getYear()).hashCode();
@@ -219,6 +231,11 @@ public class Movie implements Serializable {
     @Override
     public String toString() {
         return "entity.Movie[ id=" + id + " ]";
+    }
+
+    public FeaturesVector createFeaturesVector() {
+
+        return null;
     }
 
 }

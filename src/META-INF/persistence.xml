@@ -5,6 +5,7 @@
     <class>entity.Genre</class>
     <class>entity.Movie</class>
     <class>entity.Award</class>
+    <class>entity.Person</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/movies"/>
       <property name="javax.persistence.jdbc.password" value="root"/>

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package entity;
 
-import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,8 +21,8 @@ import javax.persistence.Table;
  * @author Skrzypek
  */
 @Entity
-@Table(name = "movie_genre")
-public class MovieGenre implements Serializable {
+@Table(name = "award_movie_person")
+public class AwardMoviePerson {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,46 +31,34 @@ public class MovieGenre implements Serializable {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "genre_id")
-    private Genre genre;
+    @JoinColumn (name = "movie_person_id")
+    private MoviePerson moviePerson;
 
     @ManyToOne
-    @JoinColumn(name = "movie_id")
-    private Movie movie;
+    @JoinColumn (name = "award_id")
+    private Award award;
 
     public Integer getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public Genre getGenre() {
-        return genre;
+    public MoviePerson getMoviePerson() {
+        return moviePerson;
     }
 
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public void setMoviePerson(MoviePerson moviePerson) {
+        this.moviePerson = moviePerson;
     }
 
-    public Movie getMovie() {
-        return movie;
+    public Award getAward() {
+        return award;
     }
 
-    public void setMovie(Movie movie) {
-        this.movie = movie;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        MovieGenre that = (MovieGenre) o;
-        return (this.movie.equals(that.movie) && this.genre.equals(that.genre));
+    public void setAward(Award award) {
+        this.award = award;
     }
 }
