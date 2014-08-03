@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package structures.extractors;
 
-import entity.Genre;
+import entity.MoviePerson;
+import entity.Person;
 import helpers.HibernateUtil;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,7 +26,7 @@ import structures.Feature;
  */
 public class RolesExtractor implements FeatureExtractor {
 
-     private String question;
+    private String question;
     private String query;
     Properties properties;
     InputStream input;
@@ -64,14 +64,18 @@ public class RolesExtractor implements FeatureExtractor {
     @Override
     public List<Feature> extractFeatures() {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Query query = session.createQuery("from Genre");
-        List<Genre> genres = query.list();
+        Query query = session.createQuery("from MoviePerson");
+        List<MoviePerson> moviePeople = query.list();
 
-        System.out.println(genres.size());
+        System.out.println(moviePeople.size());
         ArrayList<Feature> features = new ArrayList<>();
-        for(Genre genre : genres) {
-            Feature feature = new Feature(question + " " + genre.getName()+ "?");
-            feature.setQuery(this.query + " and genre_id = " + genre.getId());
+        for (MoviePerson moviePerson : moviePeople) {
+//            query = session.createQuery("from Movie where movie_id = "+ moviePerson.getMovie().getId());
+//            Movie movie = (Movie) query.list().get(0);
+            query = session.createQuery("from Person where id = " + moviePerson.getPerson().getId());
+            Person person = (Person) query.list().get(0);
+            Feature feature = new Feature(question.split(";")[0] + " " + person + " " + question.split(";")[1] + moviePerson.getRole() + "?");
+            feature.setQuery(this.query + " and person_id = " + person.getId() + " and role = '" + moviePerson.getRole()+ "'");
             features.add(feature);
         }
         return features;

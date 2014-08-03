@@ -147,7 +147,7 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Person[ id=" + id + " ]";
+        return firstName + " "+ lastName;
     }
 
 }

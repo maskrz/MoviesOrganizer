@@ -8,8 +8,6 @@ package structures;
 
 import entity.Movie;
 import helpers.HibernateUtil;
-import java.util.HashMap;
-import java.util.Map.Entry;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -20,17 +18,17 @@ import org.hibernate.Session;
 public class Feature {
     private String question;
     private String query;
-    private static HashMap<String, String> parameters;
+//    private static HashMap<String, String> parameters;
 
     public Feature(String question) {
         this.question = question;
         query = "";
-        parameters = new HashMap<>();
+//        parameters = new HashMap<>();
     }
 
-    public void addParameter(String key, String value) {
-        parameters.put(key, value);
-    }
+//    public void addParameter(String key, String value) {
+//        parameters.put(key, value);
+//    }
 
     public String getQuestion() {
         return question;
@@ -51,15 +49,15 @@ public class Feature {
     public static boolean getValue(Feature feature, Movie movie) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createQuery(feature.getQuery());
-        applyParameters(query);
+//        applyParameters(query);
         query.setParameter("movie_id", movie.getId());
 
         return !query.list().isEmpty();
     }
 
-    private static void applyParameters(Query query) {
-        for(Entry<String, String> entry : parameters.entrySet()) {
-            query.setParameter(entry.getKey(), entry.getValue());
-        }
-    }
+//    private static void applyParameters(Query query) {
+//        for(Entry<String, String> entry : parameters.entrySet()) {
+//            query.setParameter(entry.getKey(), entry.getValue());
+//        }
+//    }
 }
