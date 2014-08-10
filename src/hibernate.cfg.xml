@@ -8,6 +8,7 @@
     <property name="hibernate.connection.username">postgres</property>
     <property name="hibernate.connection.password">root</property>
     <property name="current_session_context_class">thread</property>
+    <property name="hibernate.hbm2ddl.auto">create-drop</property>
     <property name="show_sql">true</property>
     <property name="hbm2ddl.auto">update</property>
     <mapping class="entity.Award"/>
