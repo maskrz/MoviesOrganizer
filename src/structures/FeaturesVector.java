@@ -14,4 +14,16 @@ import java.util.ArrayList;
  */
 public class FeaturesVector {
     private ArrayList<Feature> features;
+
+    public FeaturesVector() {
+        features = new ArrayList();
+    }
+
+    public void addFeatures(ArrayList<Feature> features) {
+        this.features.addAll(features);
+    }
+
+    public ArrayList<Feature> getFeatures() {
+        return this.features;
+    }
 }
