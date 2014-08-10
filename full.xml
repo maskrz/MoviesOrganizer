@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <award id="1" name="Oskar"/>
+    <award id="2" name="Zloty Glob" />
+    
+    <award_movie_person id="1" movie_person_id="1" award_id="1" year="2000" type="Nominacja" category="Najlepszy aktor" award_name="" />
+    <award_movie_person id="2" movie_person_id="2" award_id="2" year="2000" type="Nagroda" category="Najlepszy aktor" award_name="" />
+    <award_movie_person id="4" movie_person_id="3" award_id="2" year="2007" type="Nagroda" category="Najlepszy aktor" award_name="" />
+    <award_movie_person id="5" movie_person_id="4" award_id="1" year="2007" type="Nominacja" category="Najlepszy rezyser" award_name="" />
+    
+    <genre id="1" name="Komediowy" />
+    <genre id="2" name="Familijny" />
+    <genre id="3" name="Dramat" />
+    
+    <movie id="1" filmweb_id="1" title="Tytanik" original_title="Titanic" premiere="1990-11-11" duration="115" evaluation="5" production="USA" is_adaptation="FALSE" book_title="" />
+    <movie id="2" filmweb_id="2" title="Intouchables" original_title="Nietykalni" premiere="2001-11-11" duration="150" evaluation="7.9" production="France" is_adaptation="FALSE" book_title="" />
+
+    <movie_award id="1" movie_id="1" awards_id="1" year="2000" type="Nagroda" category="Najlepszy film" award_name="" />
+    <movie_award id="2" movie_id="2" awards_id="2" year="2008" type="Nominacja" category="Najlepszy film" award_name="" />
+    
+    <movie_genre id="1" movie_id="1" genre_id="2" />
+    <movie_genre id="2" movie_id="1" genre_id="1" />
+    <movie_genre id="3" movie_id="2" genre_id="3" />
+    
+    <movie_person id="1" movie_id="1" person_id="1" role="Aktor" />
+    <movie_person id="2" movie_id="1" person_id="2" role="Aktor" />
+    <movie_person id="3" movie_id="2" person_id="3" role="Aktor" />
+    <movie_person id="4" movie_id="2" person_id="1" role="Rezyser" />
+    
+    <person id="1" first_name="Leonardo" last_name="DiCaprio" birth="1980-11-11" evaluation="6" height="170" />
+    <person id="2" first_name="Angelina" last_name="Jolie" birth="1982-11-11" evaluation="6" height="160" />
+    <person id="3" first_name="Johny" last_name="Depp" birth="1977-11-11" evaluation="9" height="175" />
+    
+    
+    
+</dataset>

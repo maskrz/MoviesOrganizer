@@ -7,12 +7,12 @@
 package helpers;
 
 import entity.Award;
+import entity.AwardMoviePerson;
 import entity.Genre;
 import entity.Movie;
 import entity.MovieAward;
 import entity.MovieGenre;
 import entity.MoviePerson;
-import entity.AwardMoviePerson;
 import entity.Person;
 import java.util.Iterator;
 import java.util.List;
@@ -123,7 +123,7 @@ public class HibernateUtilIT {
     public void testPerson() {
         Person person = (Person)session.get(Person.class, 1);
         Assert.assertEquals("Leonardo", person.getFirstName());
-        Assert.assertEquals(1, person.getMovies().size());
+        Assert.assertEquals(2, person.getMovies().size());
     }
 
     @Test

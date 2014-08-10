@@ -7,48 +7,20 @@
 package structures.extractors;
 
 import entity.Movie;
-import helpers.HibernateUtil;
 import java.util.ArrayList;
-import org.hibernate.Session;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import servicesImpl.DbUnitTestCase;
 import structures.Feature;
 
 /**
  *
  * @author Skrzypek
  */
-public class DurationExtractorTest {
+public class DurationExtractorTest extends DbUnitTestCase {
 
     public DurationExtractorTest() {
-    }
-
-    private static Session session;
-
-    @Before
-    public void setUpOne() {
-        //session.beginTransaction();
-    }
-
-    @After
-    public void tearDownOnce() {
-//        if(session.isOpen())
-//            session.close();
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-        session = HibernateUtil.getSessionFactory().openSession();
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-        if(session.isOpen())
-            session.close();
+        super("DurationExtractorTest");
     }
 
     @Test
@@ -71,7 +43,7 @@ public class DurationExtractorTest {
         Feature f3 = features.get(3);
         Feature f4 = features.get(4);
         Feature f5 = features.get(5);
-        Movie m = (Movie) session.get(Movie.class, 1);
+        Movie m = moviesService.getMovieById(1);
         Assert.assertTrue(Feature.getValue(f, m));
         Assert.assertTrue(Feature.getValue(f1, m));
         Assert.assertTrue(Feature.getValue(f2, m));
