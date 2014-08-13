@@ -38,7 +38,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
@@ -63,6 +63,7 @@
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="missingMoviesButton" min="-2" pref="139" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jButton1" min="-2" pref="139" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -99,7 +100,9 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButton2" min="-2" pref="46" max="-2" attributes="0"/>
-                  <EmptySpace pref="104" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="missingMoviesButton" min="-2" pref="48" max="-2" attributes="0"/>
+                  <EmptySpace pref="50" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -164,6 +167,14 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Borat: Podpatrzone w Ameryce, aby Kazachstan r&#xf3;s&#x142; w si&#x142;&#x119;, a ludzie &#x17c;yli dostatniej"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="missingMoviesButton">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Missing movies"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="missingMoviesButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

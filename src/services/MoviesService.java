@@ -7,6 +7,8 @@
 package services;
 
 import entity.Movie;
+import info.talacha.filmweb.models.Film;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,5 +17,9 @@ import entity.Movie;
 public interface MoviesService {
 
     Movie getMovieById(int id);
+
+    ArrayList<Movie> getAllMovies();
+
+    void createMovie(Film film);
 
 }

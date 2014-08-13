@@ -46,6 +46,7 @@ public class MainFrame extends javax.swing.JFrame {
         moviesAmountTextField = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         titleTextField = new javax.swing.JTextField();
+        missingMoviesButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,6 +93,13 @@ public class MainFrame extends javax.swing.JFrame {
 
         titleTextField.setText("Borat: Podpatrzone w Ameryce, aby Kazachstan rósł w siłę, a ludzie żyli dostatniej");
 
+        missingMoviesButton.setText("Missing movies");
+        missingMoviesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                missingMoviesButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -116,6 +124,7 @@ public class MainFrame extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(missingMoviesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -143,7 +152,9 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(titleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(104, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(missingMoviesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -161,7 +172,7 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void DownloadDataButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DownloadDataButtonActionPerformed
-        
+        OrganizerFacade.downloadMovies();
     }//GEN-LAST:event_DownloadDataButtonActionPerformed
 
     private void CreateDatabaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateDatabaseButtonActionPerformed
@@ -172,7 +183,10 @@ public class MainFrame extends javax.swing.JFrame {
         FilmwebApi fa = new FilmwebApi();
         ArrayList<Film> fl = fa.getFilmList(titleTextField.getText());
         for (Film f : fl) {
+            System.out.println("------------------- MOVIE ----------------------");
             System.out.println(f.getTitle());
+            System.out.println(f.getYear());
+            System.out.println(f.getDuration());
             System.out.println(f.getCountries());
             System.out.println(f.getDescription());
             System.out.println(f.getFilmUrl());
@@ -206,6 +220,10 @@ public class MainFrame extends javax.swing.JFrame {
         System.out.println(movie1.getGenres().size());
         session.close();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void missingMoviesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_missingMoviesButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_missingMoviesButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -250,6 +268,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton missingMoviesButton;
     private javax.swing.JTextField moviesAmountTextField;
     private javax.swing.JCheckBox removeDbCheckBox;
     private javax.swing.JTextField titleTextField;

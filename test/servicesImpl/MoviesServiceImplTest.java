@@ -7,6 +7,7 @@
 package servicesImpl;
 
 import entity.Movie;
+import java.util.ArrayList;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -37,6 +38,32 @@ public class MoviesServiceImplTest extends DbUnitTestCase {
         Movie result = instance.getMovieById(id);
         assertEquals("Tytanik", result.getTitle());
         assertEquals(2, result.getGenres().size());
+    }
+
+    @Test
+    public void testGetAllMovies() {
+        System.out.println("getAllMovies");
+        MoviesServiceImpl instance = new MoviesServiceImpl();
+        ArrayList<Movie> result = instance.getAllMovies();
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    public void testCreateMovie() {
+        System.out.println("createMovie");
+        MoviesServiceImpl instance = new MoviesServiceImpl();
+
+//        Film film = new Film(null);
+//        film.setCountries("Test");
+//        film.setDuration(111);
+//        film.setPolishTitle("pltest");
+//        film.setRate(2f);
+//        film.setVotes(333);
+//        film.setYear(1111);
+
+
+//        ArrayList<Movie> result = instance.getAllMovies();
+//        assertEquals(2, result.size());
     }
 
 }

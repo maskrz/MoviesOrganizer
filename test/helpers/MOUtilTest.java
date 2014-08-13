@@ -7,6 +7,7 @@
 package helpers;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,12 +30,17 @@ public class MOUtilTest {
     }
 
     @Test
-    public void testDateOfYear() {
+    public void testStringDateOfYear() {
         System.out.println("dateOfYear");
         String year = "1991";
         String expResult = "1991-01-01";
-        String result = MOUtil.dateOfYear(year);
+        String result = MOUtil.stringDateOfYear(year);
         assertTrue(expResult.equals(result));
+    }
+
+    @Test
+    public void testDateOfYear() {
+        Assert.assertEquals("Sat Jan 01 00:00:00 CET 2000", MOUtil.dateOfYear(2000).toString());
     }
 
 }

@@ -5,6 +5,9 @@
  */
 package helpers;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  *
  * @author Skrzypek
@@ -14,7 +17,13 @@ public class MOUtil {
     private MOUtil() {
     }
 
-    public static String dateOfYear(String year) {
+    public static String stringDateOfYear(String year) {
         return year + "-01-01";
+    }
+
+    public static Date dateOfYear(int year) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, Calendar.JANUARY, 1, 0, 0, 0);
+        return cal.getTime();
     }
 }

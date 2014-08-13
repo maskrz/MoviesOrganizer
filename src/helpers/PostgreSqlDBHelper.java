@@ -20,10 +20,10 @@ public class PostgreSqlDBHelper extends DBHelper {
 
     private String username = "postgres";
     private String password = "root";
-    String url = "jdbc:mysql://localhost/";
+    String url = "jdbc:postgresql://localhost/movies";
     
     public PostgreSqlDBHelper() {
-        sDriverName = "org.sqlite.JDBC";
+        sDriverName = "org.postgresql.Driver";
         sJdbc = "jdbc:sqlite";
     }
 

@@ -65,7 +65,7 @@ public class DoPExtractor implements FeatureExtractor {
         ArrayList<Feature> features = new ArrayList<>();
         for (String premiere : dates) {
             Feature feature = new Feature(question + " "+ premiere + " lub pozniej?");
-            feature.setQuery(this.query + " and premiere > " + "'" + MOUtil.dateOfYear(premiere) + "'");
+            feature.setQuery(this.query + " and premiere > " + "'" + MOUtil.stringDateOfYear(premiere) + "'");
             features.add(feature);
         }
         return features;

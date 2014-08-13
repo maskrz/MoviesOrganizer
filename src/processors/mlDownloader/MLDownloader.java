@@ -99,6 +99,7 @@ public class MLDownloader {
         title = title.replace("&amp;", "&");
         title = title.replace("&quot;", "\"");
         title = title.replace("&sup2;", "^");
+        title = title.replace("&middot;", "·");
         return title;
     }
 

@@ -7,6 +7,7 @@
 package moviesorganizer;
 
 import processors.databaseCreator.DBCreator;
+import processors.downloader.MoviesDataDownloader;
 import processors.mlDownloader.MLDownloader;
 
 /**
@@ -23,5 +24,14 @@ public class OrganizerFacade {
     public static void downloadML(int moviesAmount) {
         MLDownloader mld = new MLDownloader(moviesAmount);
         mld.downloadML();
+    }
+
+    public static void downloadMovies() {
+        MoviesDataDownloader mdd = new MoviesDataDownloader();
+        mdd.downloadData();
+    }
+
+    public static void missingMovies() {
+        
     }
 }
