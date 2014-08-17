@@ -45,7 +45,7 @@ public class MLDownloader {
 
     public void downloadML() {
         for (int i = startPage; i < startPage + pagesAmount; i++) {
-            downloadFromPage(url + 1);
+            downloadFromPage(url + i);
         }
     }
 

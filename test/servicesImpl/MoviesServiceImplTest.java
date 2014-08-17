@@ -6,6 +6,7 @@
 
 package servicesImpl;
 
+import entity.Genre;
 import entity.Movie;
 import java.util.ArrayList;
 import org.junit.AfterClass;
@@ -64,6 +65,15 @@ public class MoviesServiceImplTest extends DbUnitTestCase {
 
 //        ArrayList<Movie> result = instance.getAllMovies();
 //        assertEquals(2, result.size());
+    }
+
+    @Test
+    public void testGetGenreByName() {
+        System.out.println("getGenreByName");
+        MoviesServiceImpl instance = new MoviesServiceImpl();
+        Genre g = instance.getGenreByName("Familinjy");
+        assertNotNull(g);
+        assertEquals(2+"", g.getId()+"");
     }
 
 }

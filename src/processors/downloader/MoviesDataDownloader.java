@@ -49,7 +49,7 @@ public class MoviesDataDownloader {
         int year = Integer.valueOf(line.split(";")[2]);
         ArrayList<Film> films = fa.getFilmList(title, year);
         for(Film film: films) {
-            if(film.getTitle() != null) {
+            if(film.getTitle() != null || film.getPolishTitle() != null) {
                 moviesService.createMovie(film);
                 System.out.println(film.getTitle() + film.getCountries() + film.getDuration() + " created!");
                 return;

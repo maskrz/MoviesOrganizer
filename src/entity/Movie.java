@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package entity;
 
+import helpers.HibernateUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +25,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.Session;
 import structures.FeaturesVector;
 
 /**
@@ -47,6 +48,7 @@ import structures.FeaturesVector;
     @NamedQuery(name = "Movie.findByIsAdaptation", query = "SELECT m FROM Movie m WHERE m.isAdaptation = :isAdaptation"),
     @NamedQuery(name = "Movie.findByBookTitle", query = "SELECT m FROM Movie m WHERE m.bookTitle = :bookTitle")})
 public class Movie implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,15 +80,15 @@ public class Movie implements Serializable {
     @Column(name = "is_adaptation")
     private Boolean isAdaptation;
     @Column(name = "book_title", length = 255)
-    private String bookTitle;    
-    
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie", cascade=CascadeType.ALL)
+    private String bookTitle;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie", cascade = CascadeType.ALL)
     private List<MovieGenre> genres = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie", cascade=CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie", cascade = CascadeType.ALL)
     private List<MovieAward> awards = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie", cascade=CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie", cascade = CascadeType.ALL)
     private List<MoviePerson> people = new ArrayList<>();
 
     public Movie() {
@@ -185,7 +187,7 @@ public class Movie implements Serializable {
     public void setBookTitle(String bookTitle) {
         this.bookTitle = bookTitle;
     }
-    
+
     public List<MovieGenre> getGenres() {
         return genres;
     }
@@ -212,7 +214,7 @@ public class Movie implements Serializable {
 
     @Override
     public int hashCode() {
-        return (title+premiere.getYear()).hashCode();
+        return (title + premiere.getYear()).hashCode();
     }
 
     @Override
@@ -236,6 +238,22 @@ public class Movie implements Serializable {
     public FeaturesVector createFeaturesVector() {
 
         return null;
+    }
+
+    public void addGenre(Genre g) {
+        HibernateUtil.getSessionFactory().getCurrentSession().close();
+        Session session = null;
+        if (session == null) {
+            session = HibernateUtil.getSessionFactory().openSession();
+        }
+        MovieGenre mg = new MovieGenre();
+        mg.setGenre(g);
+        mg.setMovie(this);
+        this.getGenres().add(mg);
+        session.beginTransaction();
+        session.save(this);
+        session.getTransaction().commit();
+        session.close();
     }
 
 }

@@ -26,4 +26,10 @@ public class MOUtil {
         cal.set(year, Calendar.JANUARY, 1, 0, 0, 0);
         return cal.getTime();
     }
+
+    public static int getYearOfDate(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal.get(Calendar.YEAR);
+    }
 }

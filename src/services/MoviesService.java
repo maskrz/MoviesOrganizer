@@ -6,6 +6,7 @@
 
 package services;
 
+import entity.Genre;
 import entity.Movie;
 import info.talacha.filmweb.models.Film;
 import java.util.ArrayList;
@@ -22,4 +23,9 @@ public interface MoviesService {
 
     void createMovie(Film film);
 
+    Genre getGenreByName(String name);
+
+    Genre getOrCreateGenreByName(String name);
+
+    void addGenreToMovie(Movie movie, Genre genre);
 }

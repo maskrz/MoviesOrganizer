@@ -7,7 +7,9 @@
 package moviesorganizer;
 
 import processors.databaseCreator.DBCreator;
+import processors.downloader.GenresDownloader;
 import processors.downloader.MoviesDataDownloader;
+import processors.missingMovies.MissingMoviesHandler;
 import processors.mlDownloader.MLDownloader;
 
 /**
@@ -32,6 +34,12 @@ public class OrganizerFacade {
     }
 
     public static void missingMovies() {
-        
+        MissingMoviesHandler mmh = new MissingMoviesHandler();
+        mmh.listMissingMovies();
+    }
+
+    public static void downloadGenres() {
+        GenresDownloader gd = new GenresDownloader();
+        gd.downloadData();
     }
 }

@@ -23,10 +23,10 @@ public class ApplicationHelper {
         movie.setEvaluation(new BigDecimal(film.getRate()).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue());
         movie.setFilmwebId(film.getId());
         movie.setIsAdaptation(Boolean.FALSE);
-        movie.setOriginalTitle(film.getTitle());
+        movie.setOriginalTitle(film.getTitle() != null? film.getTitle(): film.getPolishTitle());
         movie.setPremiere(MOUtil.dateOfYear(film.getYear()));
         movie.setProduction(film.getCountries());
-        movie.setTitle(film.getPolishTitle());
+        movie.setTitle(film.getPolishTitle() != null? film.getPolishTitle(): film.getTitle());
         return movie;
     }
 }
