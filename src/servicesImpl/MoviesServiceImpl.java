@@ -9,9 +9,12 @@ package servicesImpl;
 import entity.Genre;
 import entity.Movie;
 import entity.MovieGenre;
+import entity.MoviePerson;
+import entity.Person;
 import helpers.ApplicationHelper;
 import info.talacha.filmweb.models.Film;
 import java.util.ArrayList;
+import java.util.Date;
 import org.hibernate.Query;
 import services.MoviesService;
 
@@ -71,6 +74,44 @@ public class MoviesServiceImpl extends ApplicationService implements MoviesServi
         mg.setGenre(genre);
         mg.setMovie(movie);
         movie.getGenres().add(mg);
+        session.beginTransaction();
+        session.save(movie);
+        session.getTransaction().commit();
+    }
+
+    @Override
+    public Person getPersonByName(String name) {
+        Query query = session.createQuery("from Person where first_name = :name");
+        query.setParameter("name", name);
+        return query.list().size() > 0? (Person) query.list().get(0) : null;
+    }
+
+    @Override
+    public Person getOrCreatepersonByName(String name) {
+        Person person = getPersonByName(name);
+        if (person != null) {
+            return person;
+        } else {
+            person = new Person();
+            person.setFirstName(name);
+            person.setLastName("");
+            person.setBitrh(new Date());
+            person.setHeight(0);
+            session.beginTransaction();
+            session.save(person);
+            session.getTransaction().commit();
+//            session.close();
+            return person;
+        }
+    }
+
+    @Override
+    public void addPersonToMovie(Movie movie, Person person, String role) {
+        MoviePerson mp = new MoviePerson();
+        mp.setPerson(person);
+        mp.setMovie(movie);
+        mp.setRole(role);
+        movie.getPeople().add(mp);
         session.beginTransaction();
         session.save(movie);
         session.getTransaction().commit();
