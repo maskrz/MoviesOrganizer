@@ -24,6 +24,8 @@ public interface MoviesService {
 
     ArrayList<Movie> getAllMovies();
 
+    ArrayList<Person> getAllPerson();
+
     void createMovie(Film film);
 
     Genre getGenreByName(String name);
@@ -47,4 +49,10 @@ public interface MoviesService {
     public void addAwardToPeople(Movie currentMovie, Person person, Award a, String category);
 
     MoviePerson getMoviePersonByMovieAndPerson(int movieId, int personId);
+
+    int countRoles(int personId);
+    
+    Person getPersonById(int id);
+
+    void addCounter(int personId, int counter);
 }

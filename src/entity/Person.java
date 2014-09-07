@@ -55,7 +55,9 @@ public class Person implements Serializable {
     @Column(name = "height")
     private Integer height;
     @Column(name="active")
-    private boolean active;
+    private Boolean active;
+    @Column(name = "counter")
+    private Integer counter;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "person", cascade=CascadeType.ALL)
     private List<MoviePerson> movies = new ArrayList<>();
@@ -135,6 +137,14 @@ public class Person implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Integer getCounter() {
+        return counter;
+    }
+
+    public void setCounter(Integer counter) {
+        this.counter = counter;
     }
 
     @Override

@@ -11,6 +11,7 @@ import processors.downloader.AwardsDownloader;
 import processors.downloader.GenresDownloader;
 import processors.downloader.MoviesDataDownloader;
 import processors.downloader.PeopleDownloader;
+import processors.helpers.RolesCounter;
 import processors.missingMovies.MissingMoviesHandler;
 import processors.mlDownloader.MLDownloader;
 import processors.plDownloader.PLDownloader;
@@ -61,6 +62,7 @@ public class OrganizerFacade {
         pl.downloadPL();
     }
     public static void countRoles() {
-        
+        RolesCounter rc = new RolesCounter();
+        rc.countRoles();
     }
 }

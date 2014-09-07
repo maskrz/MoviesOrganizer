@@ -39,6 +39,12 @@ public class MoviesServiceImpl extends ApplicationService implements MoviesServi
     }
 
     @Override
+    public ArrayList<Person> getAllPerson() {
+        Query query = session.createQuery("from Person");
+        return (ArrayList<Person>) query.list();
+    }
+
+    @Override
     public void createMovie(Film film) {
         Movie movie = ApplicationHelper.transformFilmToEntity(film);
         session.beginTransaction();
@@ -179,6 +185,30 @@ public class MoviesServiceImpl extends ApplicationService implements MoviesServi
         session.beginTransaction();
         session.save(mp);
         session.getTransaction().commit();
+    }
+
+    @Override
+    public int countRoles(int personId) {
+        Query query = session.createQuery("select count(*) from MoviePerson where person_id = :personId");
+        query.setParameter("personId", personId);
+        Long result = (Long) query.uniqueResult();
+        return result.intValue();
+    }
+
+    @Override
+    public Person getPersonById(int id) {
+        return (Person) session.get(Person.class, id);
+    }
+
+    @Override
+    public void addCounter(int personId, int counter) {
+        Person person = getPersonById(personId);
+        person.setCounter(counter);
+        //session.beginTransaction();
+        session.flush();
+        session.update(person);
+        session.flush();
+        
     }
 
 }
