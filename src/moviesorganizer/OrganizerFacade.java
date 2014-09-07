@@ -13,6 +13,7 @@ import processors.downloader.MoviesDataDownloader;
 import processors.downloader.PeopleDownloader;
 import processors.missingMovies.MissingMoviesHandler;
 import processors.mlDownloader.MLDownloader;
+import processors.plDownloader.PLDownloader;
 
 /**
  *
@@ -53,5 +54,13 @@ public class OrganizerFacade {
     public static void downloadAwards() {
         AwardsDownloader ad = new AwardsDownloader();
         ad.downloadData();
+    }
+
+    public static void downloadPL(int peopleAmount) {
+        PLDownloader pl = new PLDownloader(peopleAmount);
+        pl.downloadPL();
+    }
+    public static void countRoles() {
+        
     }
 }
