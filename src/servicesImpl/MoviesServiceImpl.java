@@ -6,8 +6,11 @@
 
 package servicesImpl;
 
+import entity.Award;
+import entity.AwardMoviePerson;
 import entity.Genre;
 import entity.Movie;
+import entity.MovieAward;
 import entity.MovieGenre;
 import entity.MoviePerson;
 import entity.Person;
@@ -114,6 +117,67 @@ public class MoviesServiceImpl extends ApplicationService implements MoviesServi
         movie.getPeople().add(mp);
         session.beginTransaction();
         session.save(movie);
+        session.getTransaction().commit();
+    }
+
+    @Override
+    public Award getAwardByName(String name) {
+        Query query = session.createQuery("from Award where name = :name");
+        query.setParameter("name", name);
+        return query.list().size() > 0? (Award) query.list().get(0) : null;
+    }
+
+    @Override
+    public Award getOrCreateAwardByName(String name) {
+        Award award = getAwardByName(name);
+        if (award != null) {
+            return award;
+        } else {
+            award = new Award();
+            award.setName(name);
+            session.beginTransaction();
+            session.save(award);
+            session.getTransaction().commit();
+//            session.close();
+            return award;
+        }
+    }
+
+    @Override
+    public void addAwardToMovie(Movie currentMovie, Award a, String category) {
+        MovieAward ma = new MovieAward();
+        ma.setAward(a);
+        ma.setCategory(category);
+        ma.setMovie(currentMovie);
+        ma.setType("Nagroda");
+        ma.setAwardName("");
+        ma.setYear(0);
+        currentMovie.getAwards().add(ma);
+        session.beginTransaction();
+        session.save(currentMovie);
+        session.getTransaction().commit();
+    }
+
+    @Override
+    public MoviePerson getMoviePersonByMovieAndPerson(int movieId, int personId) {
+        Query query = session.createQuery("from MoviePerson where movie_id = :movieId and person_id = :personId");
+        query.setParameter("movieId", movieId);
+        query.setParameter("personId", personId);
+        return query.list().size() > 0? (MoviePerson) query.list().get(0) : null;
+    }
+
+    @Override
+    public void addAwardToPeople(Movie currentMovie, Person person, Award a, String category) {
+        MoviePerson mp = getMoviePersonByMovieAndPerson(currentMovie.getId(), person.getId());
+        AwardMoviePerson amp = new AwardMoviePerson();
+        amp.setAward(a);
+        amp.setAwardName("");
+        amp.setCategory(category);
+        amp.setMoviePerson(mp);
+        amp.setType("Nagroda");
+        amp.setYear(0);
+        session.beginTransaction();
+        session.save(mp);
         session.getTransaction().commit();
     }
 

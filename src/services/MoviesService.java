@@ -6,8 +6,10 @@
 
 package services;
 
+import entity.Award;
 import entity.Genre;
 import entity.Movie;
+import entity.MoviePerson;
 import entity.Person;
 import info.talacha.filmweb.models.Film;
 import java.util.ArrayList;
@@ -35,4 +37,14 @@ public interface MoviesService {
     Person getOrCreatepersonByName(String name);
 
     void addPersonToMovie(Movie movie, Person person, String role);
+
+    Award getAwardByName(String name);
+
+    Award getOrCreateAwardByName(String name);
+
+    public void addAwardToMovie(Movie currentMovie, Award a, String category);
+
+    public void addAwardToPeople(Movie currentMovie, Person person, Award a, String category);
+
+    MoviePerson getMoviePersonByMovieAndPerson(int movieId, int personId);
 }

@@ -29,6 +29,14 @@ public class AwardMoviePerson {
     @Basic(optional = false)
     @Column(name = "id", nullable = false)
     private Integer id;
+    @Column(name = "year")
+    private Integer year;
+    @Column(name = "type")
+    private String type;
+    @Column(name = "category")
+    private String category;
+    @Column(name = "award_name")
+    private String awardName;
 
     @ManyToOne
     @JoinColumn (name = "movie_person_id")
@@ -44,6 +52,38 @@ public class AwardMoviePerson {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getAwardName() {
+        return awardName;
+    }
+
+    public void setAwardName(String awardName) {
+        this.awardName = awardName;
     }
 
     public MoviePerson getMoviePerson() {

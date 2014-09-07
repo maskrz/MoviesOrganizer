@@ -7,6 +7,7 @@
 package moviesorganizer;
 
 import processors.databaseCreator.DBCreator;
+import processors.downloader.AwardsDownloader;
 import processors.downloader.GenresDownloader;
 import processors.downloader.MoviesDataDownloader;
 import processors.downloader.PeopleDownloader;
@@ -47,5 +48,10 @@ public class OrganizerFacade {
     public static void downloadPeople() {
         PeopleDownloader pd = new PeopleDownloader();
         pd.downloadData();
+    }
+
+    public static void downloadAwards() {
+        AwardsDownloader ad = new AwardsDownloader();
+        ad.downloadData();
     }
 }
