@@ -204,11 +204,42 @@ public class MoviesServiceImpl extends ApplicationService implements MoviesServi
     public void addCounter(int personId, int counter) {
         Person person = getPersonById(personId);
         person.setCounter(counter);
-        //session.beginTransaction();
+        session.beginTransaction();
         session.flush();
         session.update(person);
         session.flush();
+        session.getTransaction().commit();
         
+    }
+
+    @Override
+    public ArrayList<Person> getMovieCast(int movieId) {
+        Query query = session.createQuery("from MoviePerson where movie_id = :movieId and role = 'Aktor'");
+        query.setParameter("movieId", movieId);
+        ArrayList<MoviePerson> mpList = (ArrayList<MoviePerson>) query.list();
+        ArrayList<Person> people = new ArrayList();
+        for(MoviePerson mp : mpList) {
+            people.add(mp.getPerson());
+        }
+        return people;
+    }
+
+    @Override
+    public void deactivatePerson(int personId) {
+        Person person = getPersonById(personId);
+        person.setActive(Boolean.FALSE);
+        session.beginTransaction();
+        session.update(person);
+        session.getTransaction().commit();
+    }
+
+    @Override
+    public void activatePerson(int personId) {
+        Person person = getPersonById(personId);
+        person.setActive(Boolean.TRUE);
+        session.beginTransaction();
+        session.update(person);
+        session.getTransaction().commit();
     }
 
 }

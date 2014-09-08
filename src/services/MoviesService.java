@@ -55,4 +55,10 @@ public interface MoviesService {
     Person getPersonById(int id);
 
     void addCounter(int personId, int counter);
+
+    ArrayList<Person> getMovieCast(int movieId);
+
+    void deactivatePerson(int personId);
+
+    void activatePerson(int personId);
 }

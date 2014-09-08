@@ -11,6 +11,7 @@ import processors.downloader.AwardsDownloader;
 import processors.downloader.GenresDownloader;
 import processors.downloader.MoviesDataDownloader;
 import processors.downloader.PeopleDownloader;
+import processors.helpers.PeopleDeactivator;
 import processors.helpers.RolesCounter;
 import processors.missingMovies.MissingMoviesHandler;
 import processors.mlDownloader.MLDownloader;
@@ -64,5 +65,10 @@ public class OrganizerFacade {
     public static void countRoles() {
         RolesCounter rc = new RolesCounter();
         rc.countRoles();
+    }
+
+    public static void deactivatePeople() {
+        PeopleDeactivator pd = new PeopleDeactivator();
+        pd.deactivatePeopleByList();
     }
 }

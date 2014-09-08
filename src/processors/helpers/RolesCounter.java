@@ -35,6 +35,6 @@ public class RolesCounter {
         int counter = ms.countRoles(id);
         System.out.println(person + ": "+ counter);
         ms.addCounter(id, counter);
-        //Person p = ms.getPersonById(id);
+        Person p = ms.getPersonById(id);
     }
 }
