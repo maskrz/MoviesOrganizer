@@ -61,4 +61,6 @@ public interface MoviesService {
     void deactivatePerson(int personId);
 
     void activatePerson(int personId);
+
+    ArrayList<Person> getActiveActors(int movieId);
 }

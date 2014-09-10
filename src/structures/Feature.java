@@ -55,6 +55,25 @@ public class Feature {
         return !query.list().isEmpty();
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if(other != null) {
+            Feature object = (Feature) other;
+            if (object.getQuery().equals(this.getQuery())) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return query.hashCode();
+    }
+
 //    private static void applyParameters(Query query) {
 //        for(Entry<String, String> entry : parameters.entrySet()) {
 //            query.setParameter(entry.getKey(), entry.getValue());

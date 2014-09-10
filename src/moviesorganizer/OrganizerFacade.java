@@ -11,11 +11,14 @@ import processors.downloader.AwardsDownloader;
 import processors.downloader.GenresDownloader;
 import processors.downloader.MoviesDataDownloader;
 import processors.downloader.PeopleDownloader;
+import processors.helpers.MoviesChecker;
 import processors.helpers.PeopleDeactivator;
 import processors.helpers.RolesCounter;
 import processors.missingMovies.MissingMoviesHandler;
 import processors.mlDownloader.MLDownloader;
 import processors.plDownloader.PLDownloader;
+import structures.FeaturesVector;
+import structures.FeaturesVectorCreator;
 
 /**
  *
@@ -70,5 +73,15 @@ public class OrganizerFacade {
     public static void deactivatePeople() {
         PeopleDeactivator pd = new PeopleDeactivator();
         pd.deactivatePeopleByList();
+    }
+
+    public static void createFeaturesVector() {
+        FeaturesVectorCreator fvc = new FeaturesVectorCreator();
+        FeaturesVector vector = fvc.createFeaturesVector();
+    }
+
+    static void checkMovies() {
+        MoviesChecker mc = new MoviesChecker();
+        mc.check();
     }
 }

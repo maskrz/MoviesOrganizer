@@ -37,7 +37,9 @@ public class FeaturesVectorCreator {
     public FeaturesVector createFeaturesVector() {
         FeaturesVector features = new FeaturesVector();
         for(String extractor : extractors) {
+            System.out.println("Extractig features: " + extractor);
             extractAndAdd(extractor, features);
+            System.out.println("--------------- SIZE: " + features.size());
         }
         return features;
     }
@@ -46,7 +48,9 @@ public class FeaturesVectorCreator {
         try {
             String cl = "structures.extractors."+extractor;
             FeatureExtractor fe = (FeatureExtractor) Class.forName(cl).newInstance();
+            System.out.println("Preparing data");
             fe.prepareData();
+            System.out.println("Data prepared");
             features.addFeatures((ArrayList<Feature>) fe.extractFeatures());
         } catch (Exception ex) {
             Logger.getLogger(FeaturesVectorCreator.class.getName()).log(Level.SEVERE, null, ex);

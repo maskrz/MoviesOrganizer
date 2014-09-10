@@ -26,4 +26,8 @@ public class FeaturesVector {
     public ArrayList<Feature> getFeatures() {
         return this.features;
     }
+
+    public int size() {
+        return features.size();
+    }
 }

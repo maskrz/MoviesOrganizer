@@ -102,4 +102,12 @@ public class MoviePerson implements Serializable {
         this.awards = awards;
     }
 
+    public int hashCode() {
+        int hash = 1;
+        hash = hash * 17 + person.getId();
+        hash = hash * 17 + movie.getId();
+        hash = hash * 17 + role.hashCode();
+        return hash;
+    }
+
 }

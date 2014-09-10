@@ -242,4 +242,16 @@ public class MoviesServiceImpl extends ApplicationService implements MoviesServi
         session.getTransaction().commit();
     }
 
+    @Override
+    public ArrayList<Person> getActiveActors(int movieId) {
+        Query query = session.createQuery("select mp from MoviePerson mp join mp.person where movie_id = :movieId and role = 'Aktor' and active = true");
+        query.setParameter("movieId", movieId);
+        ArrayList<MoviePerson> mpList = (ArrayList<MoviePerson>) query.list();
+        ArrayList<Person> people = new ArrayList();
+        for(MoviePerson mp : mpList) {
+            people.add(mp.getPerson());
+        }
+        return people;
+    }
+
 }
