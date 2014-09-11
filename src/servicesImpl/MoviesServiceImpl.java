@@ -254,4 +254,13 @@ public class MoviesServiceImpl extends ApplicationService implements MoviesServi
         return people;
     }
 
+    @Override
+    public void addSerializedToMovie(int movieId, String path) {
+        Movie movie = (Movie)session.get(Movie.class, movieId);
+        movie.setSerialized(path);
+        session.beginTransaction();
+        session.update(movie);
+        session.getTransaction().commit();
+    }
+
 }

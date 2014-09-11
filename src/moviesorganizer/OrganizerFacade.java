@@ -6,6 +6,13 @@
 
 package moviesorganizer;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import processors.databaseCreator.DBCreator;
 import processors.downloader.AwardsDownloader;
 import processors.downloader.GenresDownloader;
@@ -14,11 +21,13 @@ import processors.downloader.PeopleDownloader;
 import processors.helpers.MoviesChecker;
 import processors.helpers.PeopleDeactivator;
 import processors.helpers.RolesCounter;
+import processors.helpers.VectorFiller;
 import processors.missingMovies.MissingMoviesHandler;
 import processors.mlDownloader.MLDownloader;
 import processors.plDownloader.PLDownloader;
 import structures.FeaturesVector;
 import structures.FeaturesVectorCreator;
+import structures.RBM;
 
 /**
  *
@@ -78,10 +87,45 @@ public class OrganizerFacade {
     public static void createFeaturesVector() {
         FeaturesVectorCreator fvc = new FeaturesVectorCreator();
         FeaturesVector vector = fvc.createFeaturesVector();
+        try {
+            ObjectOutputStream ous = new ObjectOutputStream(new FileOutputStream("vector.ser"));
+            ous.writeObject(vector);
+            ous.close();
+            System.out.println("Serialization completed");
+        } catch (IOException ex) {
+            Logger.getLogger(OrganizerFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     static void checkMovies() {
         MoviesChecker mc = new MoviesChecker();
         mc.check();
+    }
+
+    public static void deserialize() {
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("vector.ser"));
+            FeaturesVector vector = (FeaturesVector) ois.readObject();
+            System.out.println("deserialized: " + vector.size());
+        } catch (Exception ex) {
+            Logger.getLogger(OrganizerFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    static void fillVectors() {
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("vector.ser"));
+            FeaturesVector vector = (FeaturesVector) ois.readObject();
+            System.out.println("deserialized: " + vector.size());
+            VectorFiller vf = new VectorFiller();
+            vf.fillAllMoviesVectors(vector);
+        } catch (Exception ex) {
+            Logger.getLogger(OrganizerFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    static void testRBM() {
+        RBM.test_rbm();
+
     }
 }

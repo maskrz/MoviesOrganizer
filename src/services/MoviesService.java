@@ -63,4 +63,6 @@ public interface MoviesService {
     void activatePerson(int personId);
 
     ArrayList<Person> getActiveActors(int movieId);
+
+    void addSerializedToMovie(int movieId, String path);
 }

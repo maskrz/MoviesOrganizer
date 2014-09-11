@@ -81,6 +81,8 @@ public class Movie implements Serializable {
     private Boolean isAdaptation;
     @Column(name = "book_title", length = 255)
     private String bookTitle;
+    @Column(name = "serialized", length = 255)
+    private String serialized;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie", cascade = CascadeType.ALL)
     private List<MovieGenre> genres = new ArrayList<>();
@@ -210,6 +212,14 @@ public class Movie implements Serializable {
 
     public void setPeople(List<MoviePerson> people) {
         this.people = people;
+    }
+
+    public String getSerialized() {
+        return serialized;
+    }
+
+    public void setSerialized(String serialized) {
+        this.serialized = serialized;
     }
 
     @Override

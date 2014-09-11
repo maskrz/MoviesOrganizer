@@ -23,13 +23,13 @@ public class MoviesChecker {
     public MoviesChecker() {
         ms = new MoviesServiceImpl();
     }
-    public void check() throws Exception {
+    public void check() {
         ArrayList<Movie> movies = ms.getAllMovies();
         for(Movie movie : movies) {
             ArrayList<Person> people = ms.getActiveActors(movie.getId());
             System.out.println(movie.getTitle());
             if(people.size() < 1) {
-                throw new Exception("------ Alert" + movie.getTitle());
+                System.out.println("------ Alert" + movie.getTitle());
             }
             System.out.println(people.size());
         }

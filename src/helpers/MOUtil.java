@@ -32,4 +32,8 @@ public class MOUtil {
         cal.setTime(date);
         return cal.get(Calendar.YEAR);
     }
+
+    public static String removeSpaces(String string) {
+        return string.replace(" ", "_");
+    }
 }

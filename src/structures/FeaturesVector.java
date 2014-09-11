@@ -6,13 +6,14 @@
 
 package structures;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Skrzypek
  */
-public class FeaturesVector {
+public class FeaturesVector implements Serializable {
     private ArrayList<Feature> features;
 
     public FeaturesVector() {
@@ -29,5 +30,14 @@ public class FeaturesVector {
 
     public int size() {
         return features.size();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for(Feature feature : features) {
+            sb.append(feature.getStringValue());
+        }
+        return sb.toString();
     }
 }

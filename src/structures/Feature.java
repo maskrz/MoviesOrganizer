@@ -8,6 +8,7 @@ package structures;
 
 import entity.Movie;
 import helpers.HibernateUtil;
+import java.io.Serializable;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -15,14 +16,16 @@ import org.hibernate.Session;
  *
  * @author Skrzypek
  */
-public class Feature {
+public class Feature implements Serializable {
     private String question;
     private String query;
+    private boolean value;
 //    private static HashMap<String, String> parameters;
 
     public Feature(String question) {
         this.question = question;
         query = "";
+        value = false;
 //        parameters = new HashMap<>();
     }
 
@@ -46,13 +49,25 @@ public class Feature {
         this.query = query;
     }
 
+    public boolean getValue() {
+        return value;
+    }
+
+    public void setValue(boolean value) {
+        this.value = value;
+    }
+
+
     public static boolean getValue(Feature feature, Movie movie) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createQuery(feature.getQuery());
 //        applyParameters(query);
         query.setParameter("movie_id", movie.getId());
+        System.out.println(feature.getQuestion());
+        boolean result = !query.list().isEmpty();
+        session.close();
+        return result;
 
-        return !query.list().isEmpty();
     }
 
     @Override
@@ -74,9 +89,7 @@ public class Feature {
         return query.hashCode();
     }
 
-//    private static void applyParameters(Query query) {
-//        for(Entry<String, String> entry : parameters.entrySet()) {
-//            query.setParameter(entry.getKey(), entry.getValue());
-//        }
-//    }
+    Object getStringValue() {
+        return this.value ? "1" : "0";
+    }
 }
