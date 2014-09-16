@@ -51,4 +51,12 @@ public class MOUtilTest {
         Assert.assertEquals(2000, MOUtil.getYearOfDate(date));
     }
 
+    @Test
+    public void test_randomGaussian() {
+        System.out.println(MOUtil.randomGaussian());
+        System.out.println(MOUtil.randomGaussian());
+        System.out.println(MOUtil.randomGaussian());
+        System.out.println(MOUtil.randomGaussian());
+    }
+
 }

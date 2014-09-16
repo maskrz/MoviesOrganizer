@@ -7,6 +7,7 @@ package helpers;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 /**
  *
@@ -35,5 +36,10 @@ public class MOUtil {
 
     public static String removeSpaces(String string) {
         return string.replace(" ", "_");
+    }
+
+    public static double randomGaussian() {
+        Random random = new Random();
+        return random.nextGaussian();
     }
 }

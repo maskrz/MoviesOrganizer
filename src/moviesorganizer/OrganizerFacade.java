@@ -27,7 +27,7 @@ import processors.mlDownloader.MLDownloader;
 import processors.plDownloader.PLDownloader;
 import structures.FeaturesVector;
 import structures.FeaturesVectorCreator;
-import structures.RBM;
+import structures.RBMtest;
 
 /**
  *
@@ -125,7 +125,7 @@ public class OrganizerFacade {
     }
 
     static void testRBM() {
-        RBM.test_rbm();
+        RBMtest.test_rbm();
 
     }
 }
