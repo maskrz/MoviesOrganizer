@@ -9,6 +9,12 @@ import Jama.Matrix;
 import helpers.MOUtil;
 import java.util.ArrayList;
 import java.util.Collections;
+import matrices.operations.CalculatedMatrixFactory;
+import matrices.operations.MatrixOperation;
+//import static matrices.operations.MatrixOperation.EXP;
+//import static matrices.operations.MatrixOperation.INCREMENT;
+//import static matrices.operations.MatrixOperation.INVERSE;
+//import static matrices.operations.MatrixOperation.RANDOM;
 
 /**
  *
@@ -45,8 +51,13 @@ public class RBMtrain {
     Matrix mWeights;
     Matrix matrixA;
     Matrix matrixB;
+    Matrix mXTemp;
+    Matrix mi;
+
+    private CalculatedMatrixFactory cmf;
 
     public RBMtrain() {
+        cmf = new CalculatedMatrixFactory();
         features = 10;
         tConcepts = 10;
         nH = 100;
@@ -66,6 +77,7 @@ public class RBMtrain {
         b = (int) tConcepts / minibatchSize;
         trainingSet = initializeTrainingSet();
         alpha = 0.1;
+
     }
 
     private int[][] initializeTrainingSet() {
@@ -98,13 +110,13 @@ public class RBMtrain {
     }
 
     private void randomA() {
-        for(int i = 0; i < features; i++) {
+        for (int i = 0; i < features; i++) {
             ma[i][0] = MOUtil.randomGaussian();
         }
     }
 
     private void randomB() {
-        for(int i = 0; i < nH; i++) {
+        for (int i = 0; i < nH; i++) {
             mb[i][0] = MOUtil.randomGaussian();
         }
     }
@@ -125,50 +137,11 @@ public class RBMtrain {
             fillBatch(batchID);
             //System.out.println(Arrays.toString(batchID));
             for (int j = 0; j < b; j++) {
-                double[][] xTemp = generateXTemp(batchID, j);
-                int d = features;
-
+                calculateXTemp(batchID, j);
+                calculateMI();
                 // XTemp * W
-                Matrix mXTemp = new Matrix(xTemp);
-                //printMatrix(mXTemp);
-                //printMatrix(mWeights);
-                //System.out.println(mXTemp.getColumnDimension() + " " + mXTemp.getRowDimension());
-                //System.out.println(mWeights.getColumnDimension() + " " + mWeights.getRowDimension());
-                Matrix multipled = mXTemp.times(mWeights);
-                //printMatrix(multipled);
-                //System.out.println(multipled.getColumnDimension());
-                //System.out.println(multipled.getRowDimension());
 
-                //repmat(b',NTemp,1)
-                double[][] repeated = repmat(mb, minibatchSize);
-                Matrix r = new Matrix(repeated);
-                //System.out.println(r.getColumnDimension());
-                //System.out.println(r.getRowDimension());
-
-                //bsxfun(@plus,repmat(b',NTemp,1),XTemp*W)
-                Matrix bsxfun = r.plus(multipled);
-                //printMatrix(r);
-                //printMatrix(multipled);
-                //printMatrix(bsxfun);
-
-                // * -1
-                Matrix inverse = bsxfun.times(-1);
-                //printMatrix(inverse);
-
-                //exp
-                Matrix exp = expMatrix(inverse);
-                //printMatrix(exp);
-
-                // +1
-                Matrix inc = incrementMatrix(exp);
-                //printMatrix(inc);
-
-                // 1/ matrix
-                Matrix mi = divideByMatrix(inc);
-                //printMatrix(mi);
-
-                Matrix rand = randMatrix(mi);
-                //printMatrix(rand);
+                Matrix rand = cmf.singleMatrixOperation(mi, MatrixOperation.RANDOM);
 
                 Matrix h2 = compareMatrices(mi, rand);
                 //printMatrix(h2);
@@ -204,7 +177,7 @@ public class RBMtrain {
                 multipled = x2.transpose().times(mi2);
                 temp = mXTemp.transpose().times(mi);
                 bsxfun = temp.minus(multipled);
-                double par = alpha/minibatchSize;
+                double par = alpha / minibatchSize;
                 temp = bsxfun.times(par);
                 //printMatrix(mWeights);
                 //printMatrix(temp);
@@ -235,7 +208,7 @@ public class RBMtrain {
 
                 printMatrix(matrixA);
                 printMatrix(matrixB);
-                
+
             }
         }
     }
@@ -256,20 +229,21 @@ public class RBMtrain {
         }
     }
 
+    private void calculateXTemp(int[] batchID, int j) {
+        mXTemp = new Matrix(generateXTemp(batchID, j));
+    }
+
     private double[][] generateXTemp(int[] batchID, int index) {
-//        System.out.println(Arrays.toString(batchID));
         double[][] result = new double[minibatchSize][features];
         int counter = 0;
         for (int i = 0; i < features; i++) {
             if (batchID[i] == index) {
-                //System.out.println("HIT");
                 for (int j = 0; j < features; j++) {
                     result[counter][j] = trainingSet[i][j];
                 }
                 counter++;
             }
         }
-        //System.out.println("----------------------------");
         return result;
     }
 
@@ -296,8 +270,8 @@ public class RBMtrain {
 
     private Matrix expMatrix(Matrix matrix) {
         Matrix result = new Matrix(matrix.getRowDimension(), matrix.getColumnDimension());
-        for(int i = 0; i < matrix.getRowDimension(); i ++) {
-            for(int j = 0; j < matrix.getColumnDimension(); j ++) {
+        for (int i = 0; i < matrix.getRowDimension(); i++) {
+            for (int j = 0; j < matrix.getColumnDimension(); j++) {
                 result.set(i, j, Math.exp(matrix.get(i, j)));
             }
         }
@@ -306,8 +280,8 @@ public class RBMtrain {
 
     private Matrix incrementMatrix(Matrix matrix) {
         Matrix result = new Matrix(matrix.getRowDimension(), matrix.getColumnDimension());
-        for(int i = 0; i < matrix.getRowDimension(); i ++) {
-            for(int j = 0; j < matrix.getColumnDimension(); j ++) {
+        for (int i = 0; i < matrix.getRowDimension(); i++) {
+            for (int j = 0; j < matrix.getColumnDimension(); j++) {
                 result.set(i, j, matrix.get(i, j) + 1);
             }
         }
@@ -316,9 +290,9 @@ public class RBMtrain {
 
     private Matrix divideByMatrix(Matrix matrix) {
         Matrix result = new Matrix(matrix.getRowDimension(), matrix.getColumnDimension());
-        for(int i = 0; i < matrix.getRowDimension(); i ++) {
-            for(int j = 0; j < matrix.getColumnDimension(); j ++) {
-                result.set(i, j, 1/matrix.get(i, j));
+        for (int i = 0; i < matrix.getRowDimension(); i++) {
+            for (int j = 0; j < matrix.getColumnDimension(); j++) {
+                result.set(i, j, 1 / matrix.get(i, j));
             }
         }
         return result;
@@ -326,8 +300,8 @@ public class RBMtrain {
 
     private Matrix randMatrix(Matrix matrix) {
         Matrix result = new Matrix(matrix.getRowDimension(), matrix.getColumnDimension());
-        for(int i = 0; i < matrix.getRowDimension(); i ++) {
-            for(int j = 0; j < matrix.getColumnDimension(); j ++) {
+        for (int i = 0; i < matrix.getRowDimension(); i++) {
+            for (int j = 0; j < matrix.getColumnDimension(); j++) {
                 result.set(i, j, Math.random());
             }
         }
@@ -336,9 +310,9 @@ public class RBMtrain {
 
     private Matrix compareMatrices(Matrix m1, Matrix m2) {
         Matrix result = new Matrix(m1.getRowDimension(), m1.getColumnDimension());
-        for(int i = 0; i < m1.getRowDimension(); i ++) {
-            for(int j = 0; j < m1.getColumnDimension(); j ++) {
-                result.set(i, j, m1.get(i, j) > m2.get(i, j)? 1 : 0);
+        for (int i = 0; i < m1.getRowDimension(); i++) {
+            for (int j = 0; j < m1.getColumnDimension(); j++) {
+                result.set(i, j, m1.get(i, j) > m2.get(i, j) ? 1 : 0);
             }
         }
         return result;
@@ -346,12 +320,25 @@ public class RBMtrain {
 
     private Matrix sumColumns(Matrix matrix) {
         Matrix result = new Matrix(1, matrix.getColumnDimension());
-        for(int i = 0; i < matrix.getRowDimension(); i ++) {
-            for(int j = 0; j < matrix.getColumnDimension(); j ++) {
+        for (int i = 0; i < matrix.getRowDimension(); i++) {
+            for (int j = 0; j < matrix.getColumnDimension(); j++) {
                 result.set(0, j, result.get(0, j) + matrix.get(i, j));
             }
         }
         return result;
+    }
+
+    private void calculateMI() {
+        
+        Matrix multipled = mXTemp.times(mWeights);
+        double[][] repeated = repmat(mb, minibatchSize);
+        Matrix r = new Matrix(repeated);
+        Matrix bsxfun = r.plus(multipled);
+        Matrix inverse = bsxfun.times(-1);
+//                Matrix rand = cmf.multipleMatrixOperations(matrixA, EXP, INCREMENT, INVERSE, RANDOM);
+        Matrix exp = cmf.singleMatrixOperation(inverse, MatrixOperation.EXP);
+        Matrix inc = cmf.singleMatrixOperation(exp, MatrixOperation.INCREMENT);
+        mi = cmf.singleMatrixOperation(inc, MatrixOperation.INVERSE);
     }
 
 }
