@@ -12,11 +12,14 @@ import java.util.Collections;
 import matrices.operations.CalculatedMatrixFactory;
 import static matrices.operations.MatrixOperation.ADVERSE;
 import static matrices.operations.MatrixOperation.COMPARE;
+import static matrices.operations.MatrixOperation.DIF_ABS;
 import static matrices.operations.MatrixOperation.EXP;
 import static matrices.operations.MatrixOperation.INCREMENT;
 import static matrices.operations.MatrixOperation.INVERSE;
+import static matrices.operations.MatrixOperation.ONES;
 import static matrices.operations.MatrixOperation.RANDOM;
 import static matrices.operations.MatrixOperation.SUM_COLUMNS;
+import static matrices.operations.MatrixOperation.SUM_ROWS;
 
 /**
  *
@@ -41,7 +44,7 @@ public class RBMtrain {
     // numbet of features
     private final int features;
     // training data
-    private int[][] trainingSet;
+    private double[][] trainingSet;
     // start time, end Time
     Long startTime;
     Long endTime;
@@ -58,6 +61,7 @@ public class RBMtrain {
     Matrix h2;
     Matrix x2;
     Matrix mi2;
+    Matrix xVal;
 
     private CalculatedMatrixFactory cmf;
 
@@ -81,12 +85,13 @@ public class RBMtrain {
         minibatchSize = 5;
         b = (int) tConcepts / minibatchSize;
         trainingSet = initializeTrainingSet();
+        xVal = new Matrix(trainingSet);
         alpha = 0.1;
 
     }
 
-    private int[][] initializeTrainingSet() {
-        int[][] result = {{1, 0, 1, 1, 0, 1, 0, 1, 1, 0},
+    private double[][] initializeTrainingSet() {
+        double[][] result = {{1, 0, 1, 1, 0, 1, 0, 1, 1, 0},
         {0, 1, 0, 0, 1, 0, 0, 1, 1, 1},
         {0, 0, 0, 0, 1, 0, 1, 1, 0, 1},
         {1, 1, 0, 0, 0, 1, 0, 0, 1, 1},
@@ -103,26 +108,26 @@ public class RBMtrain {
         for (int i = 0; i < tConcepts; i++) {
             for (int j = 0; j < features; j++) {
                 // QUESTION - why 0.01 * gaussian?
-                weights[i][j] = MOUtil.randomGaussian();
+                weights[i][j] = 0.01 * MOUtil.randomGaussian();
             }
         }
     }
 
     private void randomHidden() {
         for (int i = 0; i < nH; i++) {
-            hidden[i] = MOUtil.randomGaussian();
+            hidden[i] = 0.01 * MOUtil.randomGaussian();
         }
     }
 
     private void randomA() {
         for (int i = 0; i < features; i++) {
-            ma[i][0] = MOUtil.randomGaussian();
+            ma[i][0] = 0.01 * MOUtil.randomGaussian();
         }
     }
 
     private void randomB() {
         for (int i = 0; i < nH; i++) {
-            mb[i][0] = MOUtil.randomGaussian();
+            mb[i][0] = 0.01 * MOUtil.randomGaussian();
         }
     }
 
@@ -160,6 +165,7 @@ public class RBMtrain {
     }
 
     private void calculateParameters(int[] batchID) {
+        System.out.println(b);
         for (int j = 0; j < b; j++) {
             calculateXTemp(batchID, j);
             calculateMI();
@@ -229,16 +235,19 @@ public class RBMtrain {
 
     private void calculateA() {
         double par = alpha / minibatchSize;
-        matrixB = matrixB.plus(cmf.singleMatrixOperation(
-                mXTemp.minus(x2).transpose().times(par),
-                SUM_COLUMNS));
+        matrixA = matrixA.plus(cmf.singleMatrixOperation(
+                mXTemp.minus(x2),
+                SUM_COLUMNS)
+                .transpose().times(par));
     }
 
     private void calculateB() {
         double par = alpha / minibatchSize;
         matrixB = matrixB.plus(cmf.singleMatrixOperation(
-                mi.minus(mi2).transpose().times(par),
-                SUM_COLUMNS));
+                mi.minus(mi2),
+                SUM_COLUMNS)
+                .transpose().times(par));
+
     }
 
     private double[][] repmat(double[][] array, int times) {
@@ -252,6 +261,32 @@ public class RBMtrain {
     }
 
     private void calculateError() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        calculateMIOError();
+        calculateX2Error();
+        double error = errorValue();
+        System.out.println(error);
+    }
+
+    private void calculateMIOError() {
+        mi = cmf.multipleMatrixOperations(
+                matrixB.times(cmf.singleMatrixOperation(new Matrix(1, tConcepts), ONES))
+                .transpose()
+                .plus(xVal.times(mWeights)),
+                ADVERSE, EXP, INCREMENT, INVERSE);
+    }
+
+    private void calculateX2Error() {
+        x2 = cmf.multipleMatrixOperations(
+                matrixA.times(cmf.singleMatrixOperation(new Matrix(1, tConcepts), ONES))
+                .transpose()
+                .plus(mi.times(mWeights.transpose())),
+                ADVERSE, EXP, INCREMENT, INVERSE);
+    }
+
+    private double errorValue() {
+        double par = 1.0/(features * tConcepts);
+        double error = cmf.multipleMatrixOperations(
+                cmf.twoMatricesOperation(xVal, x2, DIF_ABS), SUM_COLUMNS, SUM_ROWS).get(0, 0);
+        return par * error;
     }
 }

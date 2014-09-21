@@ -28,6 +28,10 @@ public class CalculatedMatrixFactory {
                 return performMatrixElementsOperation(matrix, new AdverseElement());
             case SUM_COLUMNS:
                 return performSingleMatrixOperation(matrix, new SumColumns());
+            case SUM_ROWS:
+                return performSingleMatrixOperation(matrix, new SumRows());
+            case ONES:
+                return performSingleMatrixOperation(matrix, new OnesMatrix());
             default :
                 return null;
         }
@@ -74,6 +78,8 @@ public class CalculatedMatrixFactory {
         switch (operation) {
             case COMPARE:
                 return performTwoMatricesOperation(matrix1, matrix2, new CompareElements());
+            case DIF_ABS:
+                return performTwoMatricesOperation(matrix1, matrix2, new DifferenceAbs());
             default:
                 return null;
 

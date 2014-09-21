@@ -12,14 +12,14 @@ import Jama.Matrix;
  *
  * @author Skrzypek
  */
-public class OnesMatrix implements SingleMatrixOperation {
+class SumRows implements SingleMatrixOperation {
 
     @Override
     public Matrix performOperation(Matrix matrix) {
-        Matrix result = new Matrix(matrix.getRowDimension(), matrix.getColumnDimension());
+        Matrix result = new Matrix(matrix.getRowDimension(), 1);
         for (int i = 0; i < matrix.getRowDimension(); i++) {
             for (int j = 0; j < matrix.getColumnDimension(); j++) {
-                result.set(i, j, 1);
+                result.set(i, 0, result.get(i, 0) + matrix.get(i, j));
             }
         }
         return result;
