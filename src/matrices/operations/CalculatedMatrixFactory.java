@@ -17,19 +17,23 @@ public class CalculatedMatrixFactory {
     public Matrix singleMatrixOperation(Matrix matrix, MatrixOperation operation) {
         switch(operation) {
             case INCREMENT :
-                return performSingleMatrixOperation(matrix, new IncrementElement());
+                return performMatrixElementsOperation(matrix, new IncrementElement());
             case EXP:
-                return performSingleMatrixOperation(matrix, new ExpElement());
+                return performMatrixElementsOperation(matrix, new ExpElement());
             case INVERSE:
-                return performSingleMatrixOperation(matrix, new InverseElement());
+                return performMatrixElementsOperation(matrix, new InverseElement());
             case RANDOM:
-                return performSingleMatrixOperation(matrix, new RandomElement());
+                return performMatrixElementsOperation(matrix, new RandomElement());
+            case ADVERSE:
+                return performMatrixElementsOperation(matrix, new AdverseElement());
+            case SUM_COLUMNS:
+                return performSingleMatrixOperation(matrix, new SumColumns());
             default :
                 return null;
         }
     }
 
-    private Matrix performSingleMatrixOperation(Matrix matrix, MatrixElementOperation operation) {
+    private Matrix performMatrixElementsOperation(Matrix matrix, MatrixElementOperation operation) {
         Matrix result = new Matrix(matrix.getRowDimension(), matrix.getColumnDimension());
         for(int i = 0; i < matrix.getRowDimension(); i ++) {
             for(int j = 0; j < matrix.getColumnDimension(); j ++) {
@@ -39,10 +43,40 @@ public class CalculatedMatrixFactory {
         return result;
     }
 
+    private Matrix performTwoMatricesOperation(Matrix matrix1, Matrix matrix2,
+            TwoMatricesOperation operation) {
+        return operation.performOperation(matrix1, matrix2);
+    }
+
+    private Matrix performSingleMatrixOperation(Matrix matrix, SingleMatrixOperation operation) {
+        return operation.performOperation(matrix);
+    }
+
     public Matrix multipleMatrixOperations(Matrix matrix, MatrixOperation ... operations) {
         for (MatrixOperation operation : operations) {
             matrix = singleMatrixOperation(matrix, operation);
         }
         return matrix;
+    }
+
+    public void printMatrix(Matrix matrix) {
+        System.out.println(matrix.getColumnDimension());
+        System.out.println(matrix.getRowDimension());
+        for (int i = 0; i < matrix.getRowDimension(); i++) {
+            for (int j = 0; j < matrix.getColumnDimension(); j++) {
+                System.out.print(matrix.get(i, j) + " ");
+            }
+            System.out.println("");
+        }
+    }
+
+    public Matrix twoMatricesOperation(Matrix matrix1, Matrix matrix2, MatrixOperation operation) {
+        switch (operation) {
+            case COMPARE:
+                return performTwoMatricesOperation(matrix1, matrix2, new CompareElements());
+            default:
+                return null;
+
+        }
     }
 }

@@ -10,13 +10,11 @@ package matrices.operations;
  *
  * @author Skrzypek
  */
-public enum MatrixOperation {
-    ADVERSE,
-    COMPARE,
-    EXP,
-    INCREMENT,
-    INVERSE,
-    PRINT,
-    RANDOM,
-    SUM_COLUMNS;
+public class AdverseElement implements MatrixElementOperation {
+
+    @Override
+    public double performOperation(double element) {
+        return -1 * element;
+    }
+
 }

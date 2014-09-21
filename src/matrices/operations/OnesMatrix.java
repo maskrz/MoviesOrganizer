@@ -6,17 +6,17 @@
 
 package matrices.operations;
 
+import Jama.Matrix;
+
 /**
  *
  * @author Skrzypek
  */
-public enum MatrixOperation {
-    ADVERSE,
-    COMPARE,
-    EXP,
-    INCREMENT,
-    INVERSE,
-    PRINT,
-    RANDOM,
-    SUM_COLUMNS;
+public class OnesMatrix implements SingleMatrixOperation {
+
+    @Override
+    public Matrix performOperation(Matrix matrix) {
+        return null;
+    }
+
 }
