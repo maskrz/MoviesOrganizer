@@ -64,8 +64,8 @@ public class CalculatedMatrixFactory {
     }
 
     public void printMatrix(Matrix matrix) {
-        System.out.println(matrix.getColumnDimension());
         System.out.println(matrix.getRowDimension());
+        System.out.println(matrix.getColumnDimension());
         for (int i = 0; i < matrix.getRowDimension(); i++) {
             for (int j = 0; j < matrix.getColumnDimension(); j++) {
                 System.out.print(matrix.get(i, j) + " ");
@@ -84,5 +84,15 @@ public class CalculatedMatrixFactory {
                 return null;
 
         }
+    }
+
+    public Matrix repeatMatrix(Matrix matrix, int times) {
+        double[][] result = new double[times][matrix.getColumnDimension()];
+        for (int i = 0; i < times; i++) {
+            for (int j = 0; j < matrix.getColumnDimension(); j++) {
+                result[i][j] = matrix.get(0, j);
+            }
+        }
+        return new Matrix(result);
     }
 }

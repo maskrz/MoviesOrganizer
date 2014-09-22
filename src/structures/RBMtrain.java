@@ -28,106 +28,102 @@ import static matrices.operations.MatrixOperation.SUM_ROWS;
 public class RBMtrain {
 
     // number of epochs
-    private int epochs;
+    private final int epochs;
     // weights matrix
-    private double[][] weights;
     // hidden units
-    private double[] hidden;
     // number of hidden
-    private int nH;
+    private final int hiddenUnits;
     // size of minibatch
-    private int minibatchSize;
+    private final int minibatchSize;
     // training rate
     private double trainingRate;
     // number of training concepts
-    private final int tConcepts;
+    private final int concepts;
     // numbet of features
     private final int features;
     // training data
-    private double[][] trainingSet;
+    private final Matrix trainingSet;
     // start time, end Time
     Long startTime;
     Long endTime;
     double duration;
-    int b;
-    private double[][] ma;
-    private double[][] mb;
     double alpha;
-    Matrix mWeights;
-    Matrix matrixA;
-    Matrix matrixB;
+    Matrix weights;
+//    Matrix matrixA;
+//    Matrix matrixB;
+    Matrix probabilities;
     Matrix mXTemp;
     Matrix mi;
     Matrix h2;
     Matrix x2;
     Matrix mi2;
     Matrix xVal;
+    Matrix hiddenMatrix;
+    int bParameter;
 
-    private CalculatedMatrixFactory cmf;
+    private final CalculatedMatrixFactory cmf;
 
-    public RBMtrain() {
+//    public RBMtrain() {
+//        cmf = new CalculatedMatrixFactory();
+//        features = 10;
+//        tConcepts = 10;
+//        nH = 100;
+//        weights = new double[tConcepts][nH];
+//        ranomWeights();
+//        mWeights = new Matrix(weights);
+//        hidden = new double[nH];
+//        randomHidden();
+//        ma = new double[features][1];
+//        randomA();
+//        matrixA = new Matrix(ma);
+//        mb = new double[nH][1];
+//        randomB();
+//        matrixB = new Matrix(mb);
+//        epochs = 1;
+//        minibatchSize = 5;
+//        b = (int) tConcepts / minibatchSize;
+//        xVal = new Matrix(trainingSet);
+//        alpha = 0.1;
+
+//    }
+
+    RBMtrain(Matrix trainingSet, Matrix xVal, int hiddenUnits,
+            int epochs, int minibatch, double alpha) {
         cmf = new CalculatedMatrixFactory();
-        features = 10;
-        tConcepts = 10;
-        nH = 100;
-        weights = new double[tConcepts][nH];
-        ranomWeights();
-        mWeights = new Matrix(weights);
-        hidden = new double[nH];
+        this.trainingSet = trainingSet;
+        this.xVal = xVal;
+        this.hiddenUnits = hiddenUnits;
+        this.epochs = epochs;
+        this.minibatchSize = minibatch;
+        this.alpha = alpha;
+        this.concepts = trainingSet.getRowDimension();
+        this.features = trainingSet.getColumnDimension();
+        randomWeights();
         randomHidden();
-        ma = new double[features][1];
-        randomA();
-        matrixA = new Matrix(ma);
-        mb = new double[nH][1];
-        randomB();
-        matrixB = new Matrix(mb);
-        epochs = 1;
-        minibatchSize = 5;
-        b = (int) tConcepts / minibatchSize;
-        trainingSet = initializeTrainingSet();
-        xVal = new Matrix(trainingSet);
-        alpha = 0.1;
-
+        randomProbabilities();
+        bParameter = (int) (this.concepts / this.minibatchSize);
     }
 
-    private double[][] initializeTrainingSet() {
-        double[][] result = {{1, 0, 1, 1, 0, 1, 0, 1, 1, 0},
-        {0, 1, 0, 0, 1, 0, 0, 1, 1, 1},
-        {0, 0, 0, 0, 1, 0, 1, 1, 0, 1},
-        {1, 1, 0, 0, 0, 1, 0, 0, 1, 1},
-        {0, 1, 0, 0, 1, 0, 1, 0, 1, 1},
-        {0, 0, 0, 0, 0, 1, 0, 1, 1, 1},
-        {1, 1, 1, 0, 1, 0, 0, 1, 1, 0},
-        {0, 0, 0, 0, 1, 0, 1, 1, 0, 1},
-        {1, 1, 0, 0, 0, 1, 0, 1, 1, 1},
-        {0, 1, 0, 1, 1, 0, 0, 0, 1, 1}};
-        return result;
-    }
-
-    private void ranomWeights() {
-        for (int i = 0; i < tConcepts; i++) {
-            for (int j = 0; j < features; j++) {
-                // QUESTION - why 0.01 * gaussian?
-                weights[i][j] = 0.01 * MOUtil.randomGaussian();
+    private void randomWeights() {
+        weights = new Matrix(features, hiddenUnits);
+        for (int i = 0; i < features; i++) {
+            for (int j = 0; j < hiddenUnits; j++) {
+                weights.set(i, j, 0.01 * MOUtil.randomGaussian());
             }
         }
     }
 
-    private void randomHidden() {
-        for (int i = 0; i < nH; i++) {
-            hidden[i] = 0.01 * MOUtil.randomGaussian();
-        }
-    }
-
-    private void randomA() {
+    private void randomProbabilities() {
+        probabilities = new Matrix(features, 1);
         for (int i = 0; i < features; i++) {
-            ma[i][0] = 0.01 * MOUtil.randomGaussian();
+            probabilities.set(i, 0, 0.01 * MOUtil.randomGaussian());
         }
     }
 
-    private void randomB() {
-        for (int i = 0; i < nH; i++) {
-            mb[i][0] = 0.01 * MOUtil.randomGaussian();
+    private void randomHidden() {
+        hiddenMatrix = new Matrix(hiddenUnits, 1);
+        for (int i = 0; i < hiddenUnits; i++) {
+            hiddenMatrix.set(i, 0, 0.01 * MOUtil.randomGaussian());
         }
     }
 
@@ -143,7 +139,7 @@ public class RBMtrain {
 
     private void trainEpoch() {
         for (int i = 0; i < minibatchSize; i++) {
-            int[] batchID = new int[b * minibatchSize];
+            int[] batchID = new int[bParameter * minibatchSize];
             fillBatch(batchID);
             calculateParameters(batchID);
         }
@@ -152,21 +148,21 @@ public class RBMtrain {
     private void fillBatch(int[] batchID) {
         for (int i = 0; i < minibatchSize; i++) {
             ArrayList<Integer> temp = new ArrayList<>();
-            for (int j = 0; j < b;) {
+            for (int j = 0; j < bParameter;) {
                 temp.add(j++);
             }
             Collections.shuffle(temp);
             int c = 0;
             for (int j : temp) {
-                batchID[b * i + c] = j;
+                batchID[bParameter * i + c] = j;
                 c++;
             }
         }
     }
 
     private void calculateParameters(int[] batchID) {
-        System.out.println(b);
-        for (int j = 0; j < b; j++) {
+        System.out.println(bParameter);
+        for (int j = 0; j < bParameter; j++) {
             calculateXTemp(batchID, j);
             calculateMI();
             calculateH2();
@@ -186,10 +182,10 @@ public class RBMtrain {
     private double[][] generateXTemp(int[] batchID, int index) {
         double[][] result = new double[minibatchSize][features];
         int counter = 0;
-        for (int i = 0; i < features; i++) {
+        for (int i = 0; i < concepts; i++) {
             if (batchID[i] == index) {
                 for (int j = 0; j < features; j++) {
-                    result[counter][j] = trainingSet[i][j];
+                    result[counter][j] = trainingSet.get(i, j);
                 }
                 counter++;
             }
@@ -199,7 +195,8 @@ public class RBMtrain {
 
     private void calculateMI() {
         mi = cmf.multipleMatrixOperations(
-                new Matrix(repmat(mb, minibatchSize)).plus(mXTemp.times(mWeights)),
+                cmf.repeatMatrix(hiddenMatrix.transpose(), minibatchSize)
+                        .plus(mXTemp.times(weights)),
                 ADVERSE, EXP, INCREMENT, INVERSE);
     }
 
@@ -212,7 +209,8 @@ public class RBMtrain {
 
     private void calculateX2() {
         Matrix temp = cmf.multipleMatrixOperations(
-                new Matrix(repmat(ma, minibatchSize)).plus(h2.times(mWeights.transpose())),
+                cmf.repeatMatrix(probabilities.transpose(), minibatchSize).
+                        plus(h2.times(weights.transpose())),
                 ADVERSE, EXP, INCREMENT, INVERSE);
         x2 = cmf.twoMatricesOperation(
                 temp,
@@ -222,20 +220,21 @@ public class RBMtrain {
 
     private void calculateMI2() {
         mi2 = cmf.multipleMatrixOperations(
-                new Matrix(repmat(mb, minibatchSize)).plus(x2.times(mWeights)),
+                cmf.repeatMatrix(hiddenMatrix.transpose(), minibatchSize).
+                        plus(x2.times(weights)),
                 ADVERSE, EXP, INCREMENT, INVERSE);
 
     }
 
     private void calculateW() {
         double par = alpha / minibatchSize;
-        mWeights = mWeights.plus(
+        weights = weights.plus(
                 (mXTemp.transpose().times(mi).minus(x2.transpose().times(mi2))).times(par));
     }
 
     private void calculateA() {
         double par = alpha / minibatchSize;
-        matrixA = matrixA.plus(cmf.singleMatrixOperation(
+        probabilities = probabilities.plus(cmf.singleMatrixOperation(
                 mXTemp.minus(x2),
                 SUM_COLUMNS)
                 .transpose().times(par));
@@ -243,48 +242,38 @@ public class RBMtrain {
 
     private void calculateB() {
         double par = alpha / minibatchSize;
-        matrixB = matrixB.plus(cmf.singleMatrixOperation(
+        hiddenMatrix = hiddenMatrix.plus(cmf.singleMatrixOperation(
                 mi.minus(mi2),
                 SUM_COLUMNS)
                 .transpose().times(par));
 
     }
 
-    private double[][] repmat(double[][] array, int times) {
-        double[][] result = new double[times][array.length];
-        for (int i = 0; i < times; i++) {
-            for (int j = 0; j < array.length; j++) {
-                result[i][j] = array[j][0];
-            }
-        }
-        return result;
-    }
-
     private void calculateError() {
         calculateMIOError();
         calculateX2Error();
         double error = errorValue();
-        System.out.println(error);
+        System.out.println("error: " + error);
     }
 
     private void calculateMIOError() {
         mi = cmf.multipleMatrixOperations(
-                matrixB.times(cmf.singleMatrixOperation(new Matrix(1, tConcepts), ONES))
+                hiddenMatrix.times(cmf.singleMatrixOperation(new Matrix(1, concepts), ONES))
                 .transpose()
-                .plus(xVal.times(mWeights)),
+                .plus(xVal.times(weights)),
                 ADVERSE, EXP, INCREMENT, INVERSE);
     }
 
     private void calculateX2Error() {
         x2 = cmf.multipleMatrixOperations(
-                matrixA.times(cmf.singleMatrixOperation(new Matrix(1, tConcepts), ONES))
+                probabilities.times(cmf.singleMatrixOperation(new Matrix(1, concepts), ONES))
                 .transpose()
-                .plus(mi.times(mWeights.transpose())),
+                .plus(mi.times(weights.transpose())),
                 ADVERSE, EXP, INCREMENT, INVERSE);
     }
 
     private double errorValue() {
-        double par = 1.0/(features * tConcepts);
+        double par = 1.0/(features * concepts);
         double error = cmf.multipleMatrixOperations(
                 cmf.twoMatricesOperation(xVal, x2, DIF_ABS), SUM_COLUMNS, SUM_ROWS).get(0, 0);
         return par * error;

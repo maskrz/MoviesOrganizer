@@ -20,6 +20,7 @@ public enum MatrixOperation {
     ONES,
     PRINT,
     RANDOM,
+    REPEAT,
     SUM_COLUMNS,
     SUM_ROWS;
 }
