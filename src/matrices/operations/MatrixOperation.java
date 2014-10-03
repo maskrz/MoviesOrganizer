@@ -13,14 +13,17 @@ package matrices.operations;
 public enum MatrixOperation {
     ADVERSE,
     COMPARE,
+    CUMSUM,
     DIF_ABS,
     EXP,
     INCREMENT,
     INVERSE,
+    NORMALIZE,
     ONES,
     PRINT,
     RANDOM,
     REPEAT,
     SUM_COLUMNS,
-    SUM_ROWS;
+    SUM_ROWS,
+    ZEROS;
 }

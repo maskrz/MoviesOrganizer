@@ -7,7 +7,6 @@
 package processors.helpers;
 
 import entity.Movie;
-import helpers.MOUtil;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -61,18 +60,18 @@ public class VectorFiller {
     }
 
     private void serializeAndSaveToDB(FeaturesVector vector, Movie movie) {
-        String serialized = serializeAndSave(vector, MOUtil.removeSpaces(movie.getOriginalTitle()));
+        String serialized = serializeAndSave(vector, movie.getFilmwebId()+"");
         System.out.println("Serialized, save under path: " + serialized + ", saving to db");
         saveToDb(movie.getId(), serialized);
         System.out.println("Saved, success!");
     }
 
-    private String serializeAndSave(FeaturesVector vector, String title) {
+    private String serializeAndSave(FeaturesVector vector, String id) {
         try {
-            ObjectOutputStream ous = new ObjectOutputStream(new FileOutputStream(serializedPath+title+".ser"));
+            ObjectOutputStream ous = new ObjectOutputStream(new FileOutputStream(serializedPath+id+".ser"));
             ous.writeObject(vector);
             ous.close();
-            return serializedPath + title;
+            return serializedPath + id;
                     } catch (IOException ex) {
             Logger.getLogger(VectorFiller.class.getName()).log(Level.SEVERE, null, ex);
         }

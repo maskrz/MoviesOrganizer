@@ -63,31 +63,19 @@ public class RBMtrain {
 
     private final CalculatedMatrixFactory cmf;
 
-//    public RBMtrain() {
-//        cmf = new CalculatedMatrixFactory();
-//        features = 10;
-//        tConcepts = 10;
-//        nH = 100;
-//        weights = new double[tConcepts][nH];
-//        ranomWeights();
-//        mWeights = new Matrix(weights);
-//        hidden = new double[nH];
-//        randomHidden();
-//        ma = new double[features][1];
-//        randomA();
-//        matrixA = new Matrix(ma);
-//        mb = new double[nH][1];
-//        randomB();
-//        matrixB = new Matrix(mb);
-//        epochs = 1;
-//        minibatchSize = 5;
-//        b = (int) tConcepts / minibatchSize;
-//        xVal = new Matrix(trainingSet);
-//        alpha = 0.1;
+    public Matrix getProbabilities() {
+        return this.probabilities;
+    }
 
-//    }
+    public Matrix getHidden() {
+        return this.hiddenMatrix;
+    }
 
-    RBMtrain(Matrix trainingSet, Matrix xVal, int hiddenUnits,
+    public Matrix getWeights() {
+        return this.weights;
+    }
+
+    public RBMtrain(Matrix trainingSet, Matrix xVal, int hiddenUnits,
             int epochs, int minibatch, double alpha) {
         cmf = new CalculatedMatrixFactory();
         this.trainingSet = trainingSet;
@@ -101,6 +89,7 @@ public class RBMtrain {
         randomWeights();
         randomHidden();
         randomProbabilities();
+        System.out.println("Constructed");
         bParameter = (int) (this.concepts / this.minibatchSize);
     }
 
@@ -128,20 +117,31 @@ public class RBMtrain {
     }
 
     public void trainRBM() {
-        for (int i = 0; i < epochs; i++) {
             startTime = System.currentTimeMillis();
+        for (int i = 0; i < epochs; i++) {
+            long startE = System.currentTimeMillis();
+            System.out.println("Epoch: " + i);
             trainEpoch();
+            long endE = System.currentTimeMillis();
+            double d = (endE - startE) / 1000;
+            System.out.println("Epoch time: " + d);
+        }
             endTime = System.currentTimeMillis();
             duration = (endTime - startTime) / 1000;
             System.out.println(duration);
-        }
     }
 
     private void trainEpoch() {
         for (int i = 0; i < minibatchSize; i++) {
+            long startE = System.currentTimeMillis();
+            System.out.println("Batch: " + i + " of " + minibatchSize);
             int[] batchID = new int[bParameter * minibatchSize];
             fillBatch(batchID);
+            System.out.println("Batch filled");
             calculateParameters(batchID);
+            long endE = System.currentTimeMillis();
+            double d = (endE - startE) / 1000;
+            System.out.println("Batch time: " + d);
         }
     }
 
@@ -161,17 +161,30 @@ public class RBMtrain {
     }
 
     private void calculateParameters(int[] batchID) {
-        System.out.println(bParameter);
         for (int j = 0; j < bParameter; j++) {
+            long startE = System.currentTimeMillis();
+            System.out.println("Calculating parameters: " + j + " of " + bParameter);
             calculateXTemp(batchID, j);
+            System.out.println("Xtemp calculated");
             calculateMI();
+            System.out.println("MI calculated");
             calculateH2();
+            System.out.println("H2 calculated");
             calculateX2();
+            System.out.println("X2 calculated");
             calculateMI2();
+            System.out.println("MI2 calculated");
             calculateW();
+            System.out.println("W calculated");
             calculateA();
+            System.out.println("A calculated");
             calculateB();
+            System.out.println("B calculated");
             calculateError();
+            System.out.println("Error calculated");
+            long endE = System.currentTimeMillis();
+            double d = (endE - startE) / 1000;
+            System.out.println("Time: " + d);
         }
     }
 
@@ -180,9 +193,10 @@ public class RBMtrain {
     }
 
     private double[][] generateXTemp(int[] batchID, int index) {
+        //FIXME
         double[][] result = new double[minibatchSize][features];
         int counter = 0;
-        for (int i = 0; i < concepts; i++) {
+        for (int i = 0; i < minibatchSize; i++) {
             if (batchID[i] == index) {
                 for (int j = 0; j < features; j++) {
                     result[counter][j] = trainingSet.get(i, j);
@@ -253,7 +267,7 @@ public class RBMtrain {
         calculateMIOError();
         calculateX2Error();
         double error = errorValue();
-        System.out.println("error: " + error);
+//        System.out.println("error: " + error);
     }
 
     private void calculateMIOError() {

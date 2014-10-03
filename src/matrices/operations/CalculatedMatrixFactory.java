@@ -7,6 +7,7 @@
 package matrices.operations;
 
 import Jama.Matrix;
+import java.util.ArrayList;
 
 /**
  *
@@ -32,6 +33,12 @@ public class CalculatedMatrixFactory {
                 return performSingleMatrixOperation(matrix, new SumRows());
             case ONES:
                 return performSingleMatrixOperation(matrix, new OnesMatrix());
+            case ZEROS:
+                return performSingleMatrixOperation(matrix, new ZerosMatrix());
+            case NORMALIZE:
+                return performSingleMatrixOperation(matrix, new NormalizeMatrix());
+            case CUMSUM:
+                return performSingleMatrixOperation(matrix, new CumSum());
             default :
                 return null;
         }
@@ -47,6 +54,8 @@ public class CalculatedMatrixFactory {
         return result;
     }
 
+//    private Matrix performMultipleMatrixElementsOperations(Matrix matrix, )
+
     private Matrix performTwoMatricesOperation(Matrix matrix1, Matrix matrix2,
             TwoMatricesOperation operation) {
         return operation.performOperation(matrix1, matrix2);
@@ -57,10 +66,22 @@ public class CalculatedMatrixFactory {
     }
 
     public Matrix multipleMatrixOperations(Matrix matrix, MatrixOperation ... operations) {
-        for (MatrixOperation operation : operations) {
-            matrix = singleMatrixOperation(matrix, operation);
+        ArrayList<MatrixElementOperation> elementOperations = getElementOperations(operations);
+        Matrix result = new Matrix(matrix.getRowDimension(), matrix.getColumnDimension());
+        for(int i = 0; i < matrix.getRowDimension(); i++) {
+            for(int j = 0; j < matrix.getColumnDimension(); j++) {
+                double element = matrix.get(i, j);
+                for(MatrixElementOperation operation : elementOperations) {
+                    element = operation.performOperation(element);
+                }
+                result.set(i, j, element);
+            }
         }
-        return matrix;
+//
+//        for (MatrixOperation operation : operations) {
+//            matrix = singleMatrixOperation(matrix, operation);
+//        }
+        return result;
     }
 
     public void printMatrix(Matrix matrix) {
@@ -94,5 +115,31 @@ public class CalculatedMatrixFactory {
             }
         }
         return new Matrix(result);
+    }
+
+    private ArrayList<MatrixElementOperation> getElementOperations(MatrixOperation ... operations) {
+        ArrayList<MatrixElementOperation> result = new ArrayList<>();
+        for(MatrixOperation operation : operations) {
+            switch(operation) {
+                case INCREMENT :
+                    result.add(new IncrementElement());
+                    break;
+                case EXP :
+                    result.add(new ExpElement());
+                    break;
+                case INVERSE :
+                    result.add(new InverseElement());
+                    break;
+                case RANDOM :
+                    result.add(new RandomElement());
+                    break;
+                case ADVERSE :
+                    result.add(new AdverseElement());
+                    break;
+                default:
+                    break;
+            }
+        }
+        return result;
     }
 }

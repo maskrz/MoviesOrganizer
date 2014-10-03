@@ -13,6 +13,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import matrices.operations.FeaturesMatrixCreator;
 import processors.databaseCreator.DBCreator;
 import processors.downloader.AwardsDownloader;
 import processors.downloader.GenresDownloader;
@@ -127,5 +128,10 @@ public class OrganizerFacade {
     static void testRBM() {
         RBMtest.test_rbm();
 
+    }
+
+    static void createFeaturesMatrix() {
+        FeaturesMatrixCreator fmc = new FeaturesMatrixCreator();
+        System.out.println(fmc.createMatrix().serialize());
     }
 }

@@ -15,6 +15,11 @@ import java.util.Random;
  */
 public class MOUtil {
 
+    public static String trimTitle(String originalTitle) {
+        String temp = originalTitle.replace(":", "");
+        return MOUtil.removeSpaces(temp);
+    }
+
     private MOUtil() {
     }
 

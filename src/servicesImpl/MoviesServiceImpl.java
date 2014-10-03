@@ -34,7 +34,7 @@ public class MoviesServiceImpl extends ApplicationService implements MoviesServi
 
     @Override
     public ArrayList<Movie> getAllMovies() {
-        Query query = session.createQuery("from Movie where id > 514");
+        Query query = session.createQuery("from Movie");
         return (ArrayList<Movie>) query.list();
     }
 
