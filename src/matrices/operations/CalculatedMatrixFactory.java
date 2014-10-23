@@ -87,12 +87,12 @@ public class CalculatedMatrixFactory {
     public void printMatrix(Matrix matrix) {
         System.out.println(matrix.getRowDimension());
         System.out.println(matrix.getColumnDimension());
-        for (int i = 0; i < matrix.getRowDimension(); i++) {
-            for (int j = 0; j < matrix.getColumnDimension(); j++) {
-                System.out.print(matrix.get(i, j) + " ");
-            }
-            System.out.println("");
-        }
+//        for (int i = 0; i < matrix.getRowDimension(); i++) {
+//            for (int j = 0; j < matrix.getColumnDimension(); j++) {
+//                System.out.print(matrix.get(i, j) + " ");
+//            }
+//            System.out.println("");
+//        }
     }
 
     public Matrix twoMatricesOperation(Matrix matrix1, Matrix matrix2, MatrixOperation operation) {

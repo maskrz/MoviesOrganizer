@@ -90,7 +90,8 @@ public class RBMtrain {
         randomHidden();
         randomProbabilities();
         System.out.println("Constructed");
-        bParameter = (int) (this.concepts / this.minibatchSize);
+//        bParameter = (int) (this.concepts / this.minibatchSize);
+        bParameter = 10;
     }
 
     private void randomWeights() {
@@ -120,7 +121,7 @@ public class RBMtrain {
             startTime = System.currentTimeMillis();
         for (int i = 0; i < epochs; i++) {
             long startE = System.currentTimeMillis();
-            System.out.println("Epoch: " + i);
+            System.out.println("Epoch: " + i + " of " + epochs);
             trainEpoch();
             long endE = System.currentTimeMillis();
             double d = (endE - startE) / 1000;
@@ -180,8 +181,8 @@ public class RBMtrain {
             System.out.println("A calculated");
             calculateB();
             System.out.println("B calculated");
-            calculateError();
-            System.out.println("Error calculated");
+//            calculateError();
+//            System.out.println("Error calculated");
             long endE = System.currentTimeMillis();
             double d = (endE - startE) / 1000;
             System.out.println("Time: " + d);
@@ -267,7 +268,7 @@ public class RBMtrain {
         calculateMIOError();
         calculateX2Error();
         double error = errorValue();
-//        System.out.println("error: " + error);
+        System.out.println("error: " + error);
     }
 
     private void calculateMIOError() {

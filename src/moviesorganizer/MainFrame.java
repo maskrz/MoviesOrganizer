@@ -12,7 +12,10 @@ import entity.Movie;
 import helpers.HibernateUtil;
 import info.talacha.filmweb.api.FilmwebApi;
 import info.talacha.filmweb.models.Film;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -69,6 +72,8 @@ public class MainFrame extends javax.swing.JFrame {
         jButton11 = new javax.swing.JButton();
         jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
+        jButton14 = new javax.swing.JButton();
+        movieIdTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -215,6 +220,15 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        jButton14.setText("Recognize Movie");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
+
+        movieIdTextField.setText("1");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -274,9 +288,15 @@ public class MainFrame extends javax.swing.JFrame {
                                     .addComponent(jButton11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addContainerGap(56, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(titleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(movieIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(titleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -320,9 +340,14 @@ public class MainFrame extends javax.swing.JFrame {
                         .addComponent(peopleAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton12, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
-                    .addComponent(jButton13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton12, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                    .addComponent(jButton13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(movieIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 37, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -333,9 +358,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 21, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -451,14 +474,23 @@ public class MainFrame extends javax.swing.JFrame {
             Matrix m = new Matrix(toDouble(fm.getFeatures()));
             CalculatedMatrixFactory cmf = new CalculatedMatrixFactory();
 //            cmf.printMatrix(m);
-            RBMtrain train = new RBMtrain(m, m.copy(), 1000, 1000, 100, 0.01);
+            RBMtrain train = new RBMtrain(m, m.copy(), 200, 50, 50, 0.01);
             train.trainRBM();
+            saveMatrix(train.getWeights(), "weights.txt");
+            saveMatrix(train.getProbabilities(), "probabilities.txt");
+            saveMatrix(train.getHidden(), "hidden.txt");
         } catch (Exception ex) {
             Logger.getLogger(OrganizerFacade.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 
     }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        int movieId = Integer.valueOf(movieIdTextField.getText());
+        OrganizerFacade.recognizeMovie(movieId);
+
+    }//GEN-LAST:event_jButton14ActionPerformed
 
 private double[][] toDouble(int[][] features) {
         double[][] dest = new double[features.length][];
@@ -522,6 +554,7 @@ private double[][] toDouble(int[][] features) {
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -532,10 +565,35 @@ private double[][] toDouble(int[][] features) {
     private javax.swing.JButton jButton9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton missingMoviesButton;
+    private javax.swing.JTextField movieIdTextField;
     private javax.swing.JTextField moviesAmountTextField;
     private javax.swing.JTextField peopleAmountTextField;
     private javax.swing.JButton peopleButton;
     private javax.swing.JCheckBox removeDbCheckBox;
     private javax.swing.JTextField titleTextField;
     // End of variables declaration//GEN-END:variables
+
+    public void saveMatrix(Matrix matrix, String name) {
+        FileOutputStream fos = null;
+        try {
+            StringBuilder sb = new StringBuilder();
+            for(int i = 0; i < matrix.getRowDimension(); i++) {
+                for(int j = 0; j < matrix.getColumnDimension(); j++) {
+                    sb.append(matrix.get(i, j));
+                    sb.append("; ");
+                }
+                sb.append(System.getProperty("line.separator"));
+            }   File f = new File(name);
+            fos = new FileOutputStream(f);
+            fos.write(sb.toString().getBytes());
+        } catch (Exception ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }

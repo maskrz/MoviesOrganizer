@@ -28,6 +28,7 @@ import processors.mlDownloader.MLDownloader;
 import processors.plDownloader.PLDownloader;
 import structures.FeaturesVector;
 import structures.FeaturesVectorCreator;
+import structures.MovieRecognizer;
 import structures.RBMtest;
 
 /**
@@ -133,5 +134,10 @@ public class OrganizerFacade {
     static void createFeaturesMatrix() {
         FeaturesMatrixCreator fmc = new FeaturesMatrixCreator();
         System.out.println(fmc.createMatrix().serialize());
+    }
+
+    static void recognizeMovie(int movieId) {
+        MovieRecognizer mr = new MovieRecognizer(movieId);
+        mr.recognizeMovie();
     }
 }
